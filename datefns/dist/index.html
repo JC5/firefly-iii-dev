@@ -1,0 +1,294 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>testfns</title>
+</head>
+<body>
+<h1>Read the console</h1>
+<script type="text/javascript">
+    var JSONArray ={
+    "bg_BG": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "ca_ES": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "D [de\/d'] MMMM yyyy [a les] HH:mm:ss",
+        "week_in_year_fns": "'Setmana' w, yyyy",
+        "quarter_fns": "'Trimestre' Q, yyyy",
+        "half_year_fns": "'S{half}', yyyy"
+    },
+    "cs_CZ": {
+        "month_and_day_fns": "d MMMM, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'t\u00fdden' w, yyyy",
+        "quarter_fns": "Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "da_DK": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Uge' w, yyyy",
+        "quarter_fns": "'kvt.' Q, yyyy",
+        "half_year_fns": "'H{half}', yyyyy"
+    },
+    "de_DE": {
+        "month_and_day_fns": "d. MMMM Y",
+        "date_time_fns": "dd. MMM. yyyy um HH:mm:ss",
+        "week_in_year_fns": "'Woche' ww\/yyyy",
+        "quarter_fns": "'Q'QQQ, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "el_GR": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "do MMMM yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'\u0395\u03b2\u03b4\u03bf\u03bc\u03ac\u03b4\u03b1' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "en_GB": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "en_US": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "es_ES": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "El MMMM hacer, yyyy a las HH:mm:ss",
+        "week_in_year_fns": "'Semana' w, yyyy",
+        "quarter_fns": "'Trimestre' Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "et_EE": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "fa_IR": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "fi_FI": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Viikko' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "fr_FR": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "do MMMM, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Semaine' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "he_IL": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "hu_HU": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "id_ID": {
+        "month_and_day_fns": "d MMMM, y",
+        "date_time_fns": "do MMMM yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Mingguan' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "is_IS": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "it_IT": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "do MMMM yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Settimana' w yyyy",
+        "quarter_fns": "'T'Q yyyy",
+        "half_year_fns": "'S{half}' yyyy"
+    },
+    "ja_JP": {
+        "month_and_day_fns": "y\u5e74 MMMM d\u65e5",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "yyyy\u5e74w[\u9031\u76ee]",
+        "quarter_fns": "yyyy\u5e74\u7b2cQ\u56db\u534a\u671f",
+        "half_year_fns": "yyyy\u5e74H[\u534a\u671f]"
+    },
+    "ko_KR": {
+        "month_and_day_fns": "y\ub144 MMMM d\uc77c",
+        "date_time_fns": "YYYY\ub144 M\uc6d4 D\uc77c HH:mm:ss",
+        "week_in_year_fns": "YYYY\ub144 w\uc8fc",
+        "quarter_fns": "yyyy\ub144 Q\uc0ac\ubd84\uae30",
+        "half_year_fns": "yyyy\ub144 H[\ubc18\uae30]"
+    },
+    "lt_LT": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "nb_NO": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "do MMMM, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'kvartal'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "nl_NL": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "D MMMM yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "pl_PL": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "do MMMM yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'tydzie\u0144' w, yyyy",
+        "quarter_fns": "'kwarta\u0142' Q, yyyy",
+        "half_year_fns": "'{half} p\u00f3\u0142rocze' yyyy"
+    },
+    "pt_BR": {
+        "month_and_day_fns": "d [de] MMMM [de] y",
+        "date_time_fns": "dd 'de' MMMM 'de' yyyy, '\u00e0s' HH:mm:ss",
+        "week_in_year_fns": "'Semana' w 'de' yyyy",
+        "quarter_fns": "'T'Q, yyyy",
+        "half_year_fns": "'S{half}', yyyy"
+    },
+    "pt_PT": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Semana' w, yyyy",
+        "quarter_fns": "'T' Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "ro_RO": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'S\u0103pt\u0103m\u00e2n\u0103' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyy"
+    },
+    "ru_RU": {
+        "month_and_day_fns": "d MMMM yyyy",
+        "date_time_fns": "do MMMM yyyy, @ HH:mm:ss",
+        "week_in_year_fns": "'\u041d\u0435\u0434\u0435\u043b\u044f' ww, yyyy",
+        "quarter_fns": "Q'-\u0439 \u043a\u0432\u0430\u0440\u0442\u0430\u043b', yyyy",
+        "half_year_fns": "'{half}-\u0435 \u043f\u043e\u043b\u0443\u0433\u043e\u0434\u0438\u0435', yyyy"
+    },
+    "si_LK": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "sk_SK": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'T\u00fd\u017ede\u0148' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "sl_SI": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "sr_CS": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "sv_SE": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Vecka' w, yyyy",
+        "quarter_fns": "'kvartal'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "th_TH": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "tlh_AA": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "tr_TR": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Hafta' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "uk_UA": {
+        "month_and_day_fns": "d MMMM y",
+        "date_time_fns": "\u041c\u041c\u041c\u041c do, \u0440\u0456\u043a @ \u0413\u0413:\u0445\u0432:\u0441\u0435\u043a",
+        "week_in_year_fns": "'\u0422\u0438\u0436\u0434\u0435\u043d\u044c' w, yyyy",
+        "quarter_fns": "'\u0427\u0432\u0435\u0440\u0442\u044c'Q, yyy\u0443",
+        "half_year_fns": "'{half}-\u0435 \u043f\u0456\u0432\u0440\u0456\u0447\u0447\u044f', yyyy"
+    },
+    "vi_VN": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Tu\u1ea7n' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "zh_CN": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'\u5468' w\uff0cyyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    },
+    "zh_TW": {
+        "month_and_day_fns": "MMMM d, y",
+        "date_time_fns": "MMMM do, yyyy @ HH:mm:ss",
+        "week_in_year_fns": "'Week' w, yyyy",
+        "quarter_fns": "'Q'Q, yyyy",
+        "half_year_fns": "'H{half}', yyyy"
+    }
+};
+</script>
+<script src="index.js"></script>
+</body>
+</html>
