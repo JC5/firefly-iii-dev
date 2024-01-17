@@ -107,8 +107,6 @@ class GenLanguageJson extends Command
             $code        = $content['config']['html_language'];
             $destination = sprintf($localConfig['locale_file'], $code);
             $json        = json_encode($content, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512);
-            $copyright = file_get_contents(__DIR__ . '/../../js-copyright.txt');
-            $copyright = sprintf($copyright, $language, date('Y'));
 
             if ('v1' === $version) {
                 // basic but it works:
@@ -116,7 +114,7 @@ class GenLanguageJson extends Command
             }
 
             if('v2' === $version) {
-                $json        = json_encode([$language => $content], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512);
+                $json        = json_encode($content, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512);
                 $destination = sprintf($localConfig['locale_file'], $language);
                 file_put_contents($destination, $json);
             }

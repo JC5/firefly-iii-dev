@@ -7,12 +7,7 @@ $allRoot = '/sites/FF3';
 return [
     'paths'                   => [
         'firefly_iii' => $root,
-        'csv'         => sprintf('%1$s/import/%2$s/%2$s-importer', $allRoot, 'csv'),
-        'bunq'        => sprintf('%1$s/import/%2$s/%2$s-importer', $allRoot, 'bunq'),
-        'spectre'     => sprintf('%1$s/import/%2$s/%2$s-importer', $allRoot, 'spectre'),
-        'ynab'        => sprintf('%1$s/import/%2$s/%2$s-importer', $allRoot, 'ynab'),
-        'nordigen'    => sprintf('%1$s/import/%2$s', $allRoot, 'nordigen'),
-        'data'        => sprintf('%1$s/import/%2$s-importer', $allRoot, 'data'),
+        'data'        => sprintf('%1$s/data-importer', $allRoot),
         'help'        => sprintf('%s/documentation/help', $allRoot),
     ],
     'cleanup'                 => [
@@ -92,6 +87,7 @@ return [
         'v2' => [
             'config'  => [
                 'html_language',
+                'date_time_fns'
             ],
             'firefly' => [
                 'spent',
@@ -113,6 +109,12 @@ return [
                 'unknown_any_plain',
                 'unknown_budget_plain',
                 'stored_journal_js',
+                'wait_loading_transaction',
+                'nothing_found',
+                'wait_loading_data',
+                'Transfer',
+                'Withdrawal',
+                'Deposit',
                 'expense_account',
                 'revenue_account',
                 'budget',
