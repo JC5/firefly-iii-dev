@@ -1,4 +1,2 @@
 vendor
-datefns/node_modules
-datefns/.cache
-datefns/.parcel-cache
+.env
