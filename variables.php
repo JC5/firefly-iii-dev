@@ -52,41 +52,6 @@ return [
         'zh_TW',
         'zh_CN',
     ],
-    'ignore_translation_keys' => [
-        // only used dynamically
-        'config.dow_',
-        'firefly.telemetry_type_',
-        'firefly.rule_trigger_',
-        'firefly.rule_action_',
-        'form.convert_',
-        'firefly.no_',
-        'firefly.opt_group_',
-        'firefly.search_modifier_',
-        'firefly.repeat_freq_',
-        'firefly.convert_is_already_type_',
-        'firefly.cannot_disable_',
-
-        // old import
-        'import.spectre_extra_',
-
-        // configs
-        'config.month_js',
-        'config.date_time_js',
-        'config.specific_day_js',
-        'config.week_in_year_js',
-        'config.year_js',
-        'config.half_year_js',
-
-        // impossible to verify
-        'validation.',
-
-        // used in JS only
-        'firefly.errors_submission',
-        'firefly.add_another_split',
-        'firefly.you_create_transfer',
-        'firefly.you_create_withdrawal',
-        'firefly.you_create_deposit',
-    ],
     'json'                    => [
         'v2' => [
             'config'  => [
@@ -97,7 +62,7 @@ return [
                 'spent',
                 'left',
                 'paid',
-                'errors_submission',
+                'errors_submission_v2',
                 'unpaid',
                 'default_group_title_name_plain',
                 'subscriptions_in_group',
@@ -128,7 +93,6 @@ return [
                 'account_type_Debt',
                 'account_type_Loan',
                 'account_type_Mortgage',
-                'errors_submission'
             ],
         ],
         'v1' => [
@@ -162,7 +126,6 @@ return [
                 'create_another',
                 'reset_after',
                 'submit',
-                'errors_submission',
                 'amount',
                 'date',
                 'is_reconciled_fields_dropped',
@@ -177,7 +140,6 @@ return [
                 'after_update_create_another',
                 'store_as_new',
                 'reset_after',
-                'errors_submission',
                 'split_title_help',
                 'none_in_select_list',
                 'no_piggy_bank',
