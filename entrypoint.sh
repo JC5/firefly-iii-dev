@@ -11,7 +11,7 @@ php -r "unlink('composer-setup.php');"
 
 sudo mv composer.phar /usr/local/bin/composer
 
-composer install 
+composer install
 
 echo "Hello $1"
 time=$(date)
