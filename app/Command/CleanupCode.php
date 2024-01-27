@@ -143,11 +143,10 @@ class CleanupCode extends Command
         $echoed = [];
         foreach ($files as $file) {
             $i++;
-            echo '.';
             $pct          = (int)(($i / $total) * 100);
             $echoed[$pct] = $echoed[$pct] ?? false;
             if ($pct % 10 === 0 && false === $echoed[$pct]) {
-                echo $pct . '%';
+                echo '[' . $pct . '%] ';
                 $echoed[$pct] = true;
             }
 
