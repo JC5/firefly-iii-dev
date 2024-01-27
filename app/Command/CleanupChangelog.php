@@ -43,6 +43,10 @@ class CleanupChangelog extends Command
         ];
 
         foreach ($files as $key => $file) {
+            if(!file_exists($file)) {
+                $output->writeln(sprintf('The changelog for %s does not exist.', $key));
+                continue;
+            }
             $content = file_get_contents($file);
 
             // do preg match on 3, 4 or 5 digits starting with #

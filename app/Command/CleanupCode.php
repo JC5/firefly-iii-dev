@@ -34,14 +34,24 @@ class CleanupCode extends Command
         $this->extensions = $config['cleanup']['extensions'];
         $paths            = $config['cleanup']['paths'];
 
-        $this->roots   = [];
-        $this->roots[] = $config['paths']['firefly_iii'];
-        $this->roots[] = $config['paths']['data'];
+        $this->roots = [];
+        if ('' !== $config['paths']['firefly_iii']) {
+            $this->roots[] = $config['paths']['firefly_iii'];
+
+        }
+        if ('' !== $config['paths']['data']) {
+            $this->roots[] = $config['paths']['data'];
+        }
+
 
         $this->paths = [];
         foreach ($paths as $path) {
-            $this->paths[] = sprintf('%s/%s', $config['paths']['firefly_iii'], $path);
-            $this->paths[] = sprintf('%s/%s', $config['paths']['data'], $path);
+            if('' !== $config['paths']['firefly_iii']) {
+                $this->paths[] = sprintf('%s/%s', $config['paths']['firefly_iii'], $path);
+            }
+            if('' !== $config['paths']['data']) {
+                $this->paths[] = sprintf('%s/%s', $config['paths']['data'], $path);
+            }
         }
     }
 
@@ -129,12 +139,12 @@ class CleanupCode extends Command
 
         $total = count($files);
         $this->climate->out(sprintf('[b] Found %d files in all paths.', count($files)));
-        $i = 0;
+        $i      = 0;
         $echoed = [];
         foreach ($files as $file) {
             $i++;
             echo '.';
-            $pct = (int)(($i / $total) * 100);
+            $pct          = (int)(($i / $total) * 100);
             $echoed[$pct] = $echoed[$pct] ?? false;
             if ($pct % 10 === 0 && false === $echoed[$pct]) {
                 echo $pct . '%';

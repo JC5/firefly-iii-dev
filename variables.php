@@ -1,17 +1,20 @@
 <?php
 declare(strict_types=1);
 
-$root    = '/sites/FF3/release/firefly-iii';
-$allRoot = '/sites/FF3';
-
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
+
+
+$root    = $_ENV['FIREFLY_III_ROOT'] ?? '';
+$dataRoot = $_ENV['DATA_IMPORTER_ROOT'] ?? '';
+
+$allRoot = '/sites/FF3';
 
 return [
     'gh_token' => $_ENV['GH_TOKEN'],
     'paths'                   => [
         'firefly_iii' => $root,
-        'data'        => sprintf('%1$s/data-importer', $allRoot),
+        'data'        => $dataRoot,
         'help'        => sprintf('%s/documentation/help', $allRoot),
     ],
     'cleanup'                 => [
