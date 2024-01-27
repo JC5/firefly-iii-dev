@@ -1,5 +1,10 @@
 #!/bin/sh
 
+
+
+npm install --global yarn
+
+
 cd /usr/src/dev-tools
 
 rm -rf vendor
