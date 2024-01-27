@@ -1,0 +1,11 @@
+{
+    "/public/v1/js/app.js": "/public/v1/js/app.js",
+    "/public/v1/js/app_vue.js": "/public/v1/js/app_vue.js",
+    "/public/v1/js/create_transaction.js": "/public/v1/js/create_transaction.js",
+    "/public/v1/js/edit_transaction.js": "/public/v1/js/edit_transaction.js",
+    "/public/v1/js/profile.js": "/public/v1/js/profile.js",
+    "/public/v1/js/webhooks/index.js": "/public/v1/js/webhooks/index.js",
+    "/public/v1/js/webhooks/create.js": "/public/v1/js/webhooks/create.js",
+    "/public/v1/js/webhooks/edit.js": "/public/v1/js/webhooks/edit.js",
+    "/public/v1/js/webhooks/show.js": "/public/v1/js/webhooks/show.js"
+}
