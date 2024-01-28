@@ -12,7 +12,7 @@ inputs:
     default: ''
 outputs:
   result:
-    description: 'Output of the action'
+    description: 'Result of the action'
 runs:
   using: 'docker'
   image: 'Dockerfile'
