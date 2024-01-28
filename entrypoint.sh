@@ -17,4 +17,10 @@ mv composer.phar /usr/local/bin/composer
 
 composer install -q
 
-php cli.php $1 >> $GITHUB_OUTPUT
+if [[ "output" == "$2" ]]; then
+  result=$(php cli.php $1)
+  echo "result=$result" >> $GITHUB_OUTPUT
+else
+  php cli.php $1
+  echo "result=none" >> $GITHUB_OUTPUT
+fi
