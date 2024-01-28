@@ -6,6 +6,10 @@ inputs:
     description: 'What to do'
     required: true
     default: ''
+  output:  # id of input
+    description: 'Give output back'
+    required: false
+    default: ''
 outputs:
   result: # id of output
     description: 'Output of the action'
@@ -14,3 +18,4 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.action }}
+    - ${{ inputs.output }}

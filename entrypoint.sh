@@ -1,6 +1,4 @@
-#!/bin/sh
-
-
+#!/bin/bash
 
 cd /usr/src/dev-tools
 
