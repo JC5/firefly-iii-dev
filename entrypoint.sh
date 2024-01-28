@@ -29,7 +29,7 @@ if [[ "output" == "$2" ]]; then
   # echo "output=$result" >> $GITHUB_OUTPUT
   # echo "output=empty" >> $GITHUB_OUTPUT
   # echo "output=$result" >> $GITHUB_OUTPUT
-  echo "result=$result"
+  echo "result=$result" >> $GITHUB_OUTPUT
 else
   php cli.php $1
   echo "result=none" >> $GITHUB_OUTPUT
