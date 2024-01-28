@@ -18,11 +18,16 @@ composer install -q
 if [[ "output" == "$2" ]]; then
   result=$(php cli.php $1)
 
+  echo $result
+
   result="${result//'%'/'%25'}"
   result="${result//$'\n'/'%0A'}"
   result="${result//$'\r'/'%0D'}"
-  
-  echo "output=$result" >> $GITHUB_OUTPUT
+
+  echo $result
+
+  # echo "output=$result" >> $GITHUB_OUTPUT
+  echo "output=empty" >> $GITHUB_OUTPUT
 
 else
   php cli.php $1

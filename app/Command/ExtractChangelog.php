@@ -60,6 +60,7 @@ class ExtractChangelog extends Command
             }
         }
         $log = join("\n", $changelogLines);
+
         echo $log;
 
         return 0;
