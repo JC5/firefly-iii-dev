@@ -27,8 +27,9 @@ if [[ "output" == "$2" ]]; then
   echo $result
 
   # echo "output=$result" >> $GITHUB_OUTPUT
-  echo "output=empty" >> $GITHUB_OUTPUT
-
+  # echo "output=empty" >> $GITHUB_OUTPUT
+  # echo "output=$result" >> $GITHUB_OUTPUT
+  echo "::set-output name=output::$result"
 else
   php cli.php $1
   echo "output=none" >> $GITHUB_OUTPUT
