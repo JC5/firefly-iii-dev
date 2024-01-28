@@ -20,9 +20,14 @@ if [[ "output" == "$2" ]]; then
 
   # echo $result
 
-  result="${result//'%'/'%25'}"
-  result="${result//$'\n'/'%0A'}"
-  result="${result//$'\r'/'%0D'}"
+  #result="${result//'%'/'%25'}"
+  #result="${result//$'\n'/'%0A'}"
+  #result="${result//$'\r'/'%0D'}"
+   {
+          echo 'result<<EOF'
+          php cli.php $1
+          echo EOF
+        } >> "$GITHUB_OUTPUT"
 
   # echo $result
 
