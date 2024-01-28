@@ -1,17 +1,17 @@
 # action.yml
-name: 'Firefly III dev tools'
-description: 'Run things bla bla bla'
+name: 'Firefly III development tools'
+description: 'A GitHub action to help with Firefly III development and release management'
 inputs:
-  action:  # id of input
-    description: 'What to do'
+  action:
+    description: 'Which action to undertake.'
     required: true
     default: ''
-  output:  # id of input
-    description: 'Give output back'
+  output:
+    description: 'Whether or not to return the results of the action.'
     required: false
     default: ''
 outputs:
-  result: # id of output
+  result:
     description: 'Output of the action'
 runs:
   using: 'docker'
