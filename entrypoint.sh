@@ -17,11 +17,14 @@ composer install -q
 
 if [[ "output" == "$2" ]]; then
   result=$(php cli.php $1)
-  # echo "result=$result" >> $GITHUB_OUTPUT
+
+  echo "Result of $1 is"
+
+  echo $result
 
   EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
   echo "text<<$EOF" >> $GITHUB_OUTPUT
-  echo "$result" >> $GITHUB_OUTPUT
+  echo "result=$result" >> $GITHUB_OUTPUT
   echo "$EOF" >> $GITHUB_OUTPUT
 
 else

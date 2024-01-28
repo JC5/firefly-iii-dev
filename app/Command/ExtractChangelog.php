@@ -49,15 +49,10 @@ class ExtractChangelog extends Command
                 continue;
             }
             if(str_starts_with($line, '## ') && false === $started && 0 === count($changelogLines)) {
-                echo 'Started because line "'.$line.'"';
-                echo PHP_EOL;
                 $started = true;
                 continue;
             }
             if(str_starts_with( $line, '## ') && true === $started) {
-                $started = false;
-                echo 'Stopped because line "'.$line.'"';
-                echo PHP_EOL;
                 break;
             }
             if($started) {
