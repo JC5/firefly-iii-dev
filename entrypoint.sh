@@ -23,11 +23,10 @@ if [[ "output" == "$2" ]]; then
   #result="${result//'%'/'%25'}"
   #result="${result//$'\n'/'%0A'}"
   #result="${result//$'\r'/'%0D'}"
-   {
-          echo 'result<<EOF'
-          echo $result
-          echo EOF
-        } >> "$GITHUB_OUTPUT"
+
+  echo 'result<<EOF' >> $GITHUB_OUTPUT
+  php cli.php $1 >> $GITHUB_OUTPUT
+  echo 'EOF' >> $GITHUB_OUTPUT
 
   # echo $result
 
