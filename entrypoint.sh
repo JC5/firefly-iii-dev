@@ -25,7 +25,7 @@ if [[ "output" == "$2" ]]; then
   #result="${result//$'\r'/'%0D'}"
    {
           echo 'result<<EOF'
-          php cli.php $1
+          echo $result
           echo EOF
         } >> "$GITHUB_OUTPUT"
 
