@@ -6,6 +6,9 @@ inputs:
     description: 'What to do'
     required: true
     default: ''
+outputs:
+  result: # id of output
+    description: 'Output of the action'
 runs:
   using: 'docker'
   image: 'Dockerfile'
