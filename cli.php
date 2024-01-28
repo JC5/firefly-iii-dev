@@ -9,6 +9,7 @@ use App\Command\CleanupCode;
 use App\Command\GenLanguageJson;
 use Symfony\Component\Console\Application;
 use App\Command\FixTranslationWarning;
+use App\Command\ExtractChangelog;
 
 require 'vendor/autoload.php';
 
@@ -20,5 +21,6 @@ $application->add(new CleanupCode);
 $application->add(new FixTranslationWarning);
 $application->add(new GenLanguageJson);
 $application->add(new BuildOldJs());
+$application->add(new ExtractChangelog());
 
 $application->run();

@@ -17,4 +17,4 @@ mv composer.phar /usr/local/bin/composer
 
 composer install -q
 
-php cli.php $1
+php cli.php $1 >> $GITHUB_OUTPUT
