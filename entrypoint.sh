@@ -16,10 +16,8 @@ mv composer.phar /usr/local/bin/composer
 composer install -q
 
 if [[ "output" == "$2" ]]; then
-  result=$(php cli.php $1)
-  echo 'result<<EOF' >> $GITHUB_OUTPUT
-  echo $result >> $GITHUB_OUTPUT
-  echo 'EOF' >> $GITHUB_OUTPUT
+  php cli.php $1 > $FIREFLY_III_ROOT/output.txt
+  echo "result=none" >> $GITHUB_OUTPUT
 else
   php cli.php $1
   echo "result=none" >> $GITHUB_OUTPUT

@@ -45,9 +45,6 @@ class ExtractChangelog extends Command
         $started = false;
         foreach($lines as $line) {
             $line = trim($line);
-            if('' === $line) {
-                continue;
-            }
             if(str_starts_with($line, '## ') && false === $started && 0 === count($changelogLines)) {
                 $started = true;
                 continue;
