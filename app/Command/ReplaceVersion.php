@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,8 +20,7 @@ class ReplaceVersion extends Command
     {
         $this
             ->setName('ff3:version')
-            ->setDescription('Replace version.')
-            ->addArgument('version', InputArgument::REQUIRED, 'Which version?');
+            ->setDescription('Replace version.');
     }
 
     /**
@@ -37,14 +35,14 @@ class ReplaceVersion extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         include(VARIABLES);
-        $version     = (string)$input->getArgument('version');
+        $version     = (string)(getenv('FF_III_VERSION') ?? 'develop');
         $fullVersion = $version;
         $output->writeln(sprintf('Will set version "%s" in firefly.php', $version));
         if ('develop' === $version) {
             $fullVersion = sprintf('develop/%s', date('Y-m-d'));
             $output->writeln(sprintf('For develop releases, the version gets a date: "%s"', $fullVersion));
         }
-        if(str_starts_with($version, 'v')) {
+        if (str_starts_with($version, 'v')) {
             $fullVersion = substr($version, 1);
         }
 
