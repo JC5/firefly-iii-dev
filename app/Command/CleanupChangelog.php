@@ -71,6 +71,11 @@ class CleanupChangelog extends Command
                     $res = $client->get($url, $opts);
                 } catch (RequestException $e) {
                     $output->writeln(sprintf('Issue #%d is not an issue, perhaps a discussion?', $issue));
+                    $output->writeln(sprintf('Exception is: %s', $e->getMessage()));
+                    if(str_contains($e->getMessage(), '401')) {
+                        $output->writeln('Bad token.');
+                        return 1;
+                    }
                     $res = null;
                 }
                 if (null !== $res) {
