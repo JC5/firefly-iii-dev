@@ -43,7 +43,7 @@ class CleanupChangelog extends Command
         ];
 
         foreach ($files as $key => $file) {
-            if(!file_exists($file)) {
+            if (!file_exists($file)) {
                 $output->writeln(sprintf('The changelog for %s does not exist.', $key));
                 continue;
             }
@@ -59,36 +59,56 @@ class CleanupChangelog extends Command
                 // get from GitHub
                 $url = sprintf('https://api.github.com/repos/firefly-iii/firefly-iii/issues/%s', $issue);
 
-                $opts   = [
+                $opts       = [
                     'headers' => [
                         'Accept'        => 'application/vnd.github+json',
                         'User-Agent'    => 'Firefly III changelog script/1.0',
                         'Authorization' => sprintf('Bearer %s', $config['gh_token']),
                     ],
                 ];
-                $client = new Client;
+                $res        = null;
+                $client     = new Client;
+                $discussion = false;
                 try {
                     $res = $client->get($url, $opts);
                 } catch (RequestException $e) {
-                    $output->writeln(sprintf('Issue #%d is not an issue, perhaps a discussion?', $issue));
-                    $output->writeln(sprintf('Exception is: %s', $e->getMessage()));
-                    if(str_contains($e->getMessage(), '401')) {
+                    if (str_contains($e->getMessage(), '404')) {
+                        $output->writeln(sprintf('#%d is probably a discussion, retry!', $issue));
+                        $client          = new Client;
+                        $url             = 'https://api.github.com/graphql';
+                        $newOpts         = $opts;
+                        $query           = ['query' => sprintf('query {  repository(owner: "firefly-iii", name: "firefly-iii") {    discussion(number: %d) {      title, author {login}    } }}', $issue)];
+                        $newOpts['body'] = json_encode($query);
+                        $res             = $client->post($url, $newOpts);
+                        $discussion      = true;
+                    }
+
+                    if (str_contains($e->getMessage(), '401')) {
+                        $output->writeln(sprintf('Issue #%d is not an issue.', $issue));
+                        $output->writeln(sprintf('Exception is: %s', $e->getMessage()));
                         $output->writeln('Bad token.');
                         return 1;
                     }
-                    $res = null;
                 }
+                $replace = sprintf('[Issue %d](https://github.com/firefly-iii/firefly-iii/issues/%d)', $issue, $issue);
                 if (null !== $res) {
-                    $body = (string)$res->getBody();
-                    $json = json_decode($body, true);
-                    $word = 'Issue';
-                    if ($json['pull_request']['url'] ?? false) {
-                        $word = 'PR';
+                    if (false === $discussion) {
+                        $body = (string)$res->getBody();
+                        $json = json_decode($body, true);
+                        $word = 'Issue';
+                        if ($json['pull_request']['url'] ?? false) {
+                            $word = 'PR';
+                        }
+                        $replace = sprintf('[%s %d](%s) (%s) reported by @%s', $word, $issue, $json['html_url'], $json['title'], $json['user']['login']);
                     }
-                    $replace = sprintf('[%s %d](%s) (%s) reported by @%s', $word, $issue, $json['html_url'], $json['title'], $json['user']['login']);
-                }
-                if (null === $res) {
-                    $replace = sprintf('[Issue %d](https://github.com/firefly-iii/firefly-iii/issues/%d)', $issue, $issue);
+                    if (true === $discussion) {
+                        $body    = (string)$res->getBody();
+                        $json    = json_decode($body, true);
+                        $title   = $json['data']['repository']['discussion']['title'];
+                        $user    = $json['data']['repository']['discussion']['author']['login'];
+                        $url     = sprintf('https://github.com/orgs/firefly-iii/discussions/%d', $issue);
+                        $replace = sprintf('[Discussion %d](%s) (%s) started by @%s', $issue, $url, $title, $user);
+                    }
                 }
 
                 $content = str_replace($issueFull, $replace, $content);

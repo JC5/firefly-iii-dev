@@ -10,6 +10,7 @@ use App\Command\GenLanguageJson;
 use Symfony\Component\Console\Application;
 use App\Command\FixTranslationWarning;
 use App\Command\ExtractChangelog;
+use App\Command\ReplaceVersion;
 
 require 'vendor/autoload.php';
 
@@ -22,5 +23,6 @@ $application->add(new FixTranslationWarning);
 $application->add(new GenLanguageJson);
 $application->add(new BuildOldJs());
 $application->add(new ExtractChangelog());
+$application->add(new ReplaceVersion());
 
 $application->run();
