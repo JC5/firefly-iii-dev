@@ -5,23 +5,22 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
 
-$root    = $_ENV['FIREFLY_III_ROOT'] ?? '';
+$root     = $_ENV['FIREFLY_III_ROOT'] ?? '';
 $dataRoot = $_ENV['DATA_IMPORTER_ROOT'] ?? '';
-
-$allRoot = '/sites/FF3';
+$allRoot  = '/sites/FF3';
 
 return [
-    'gh_token' => $_ENV['GH_TOKEN'],
-    'paths'                   => [
+    'gh_token'  => $_ENV['GH_TOKEN'],
+    'paths'     => [
         'firefly_iii' => $root,
         'data'        => $dataRoot,
         'help'        => sprintf('%s/documentation/help', $allRoot),
     ],
-    'cleanup'                 => [
+    'cleanup'   => [
         'extensions' => ['php', 'less', 'twig', 'gitkeep', 'gitignore', 'yml', 'xml', 'js'],
         'paths'      => ['.deploy', '.github', 'app', 'bootstrap', 'config', 'database', 'resources', 'routes', 'tests',],
     ],
-    'languages'               => [
+    'languages' => [
         'bg_BG',
         'ca_ES',
         'cs_CZ',
@@ -55,11 +54,12 @@ return [
         'zh_TW',
         'zh_CN',
     ],
-    'json'                    => [
+    'json'      => [
         'v2' => [
             'config'  => [
                 'html_language',
-                'date_time_fns'
+                'date_time_fns',
+                'date_time_fns_short',
             ],
             'firefly' => [
                 'spent',

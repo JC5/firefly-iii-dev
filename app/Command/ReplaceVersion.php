@@ -44,6 +44,7 @@ class ReplaceVersion extends Command
         }
         if (str_starts_with($version, 'v')) {
             $fullVersion = substr($version, 1);
+            $output->writeln(sprintf('For normal releases, remove the "v": "%s"', $fullVersion));
         }
 
         $configFile = sprintf('%s/config/firefly.php', $_ENV['FIREFLY_III_ROOT']);

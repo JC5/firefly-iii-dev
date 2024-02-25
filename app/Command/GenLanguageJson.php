@@ -117,6 +117,10 @@ class GenLanguageJson extends Command
                 $json        = json_encode($content, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512);
                 $destination = sprintf($localConfig['locale_file'], $language);
                 file_put_contents($destination, $json);
+
+                // for v2, also write the short (long) name.
+                $secondDestination = sprintf($localConfig['locale_file'], $code);
+                file_put_contents($secondDestination, $json);
             }
 
             // v3 is no longer updated.
