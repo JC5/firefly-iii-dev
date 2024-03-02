@@ -105,6 +105,8 @@ return [
                 'flash_warning',
                 'flash_success',
                 'close',
+                'select_dest_account',
+                'select_source_account',
                 'split_transaction_title',
                 'errors_submission',
                 'split',
