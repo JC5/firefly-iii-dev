@@ -59,7 +59,12 @@ return [
             'config'  => [
                 'html_language',
                 'date_time_fns',
+                'month_and_day_fns',
                 'date_time_fns_short',
+            ],
+            'validation' => [
+                'bad_type_source',
+                'bad_type_destination'
             ],
             'firefly' => [
                 'spent',
@@ -96,6 +101,11 @@ return [
                 'account_type_Debt',
                 'account_type_Loan',
                 'account_type_Mortgage',
+                'account_role_defaultAsset',
+                'account_role_sharedAsset',
+                'account_role_savingAsset',
+                'account_role_ccAsset',
+                'account_role_cashWalletAsset',
             ],
         ],
         'v1' => [
