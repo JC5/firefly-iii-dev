@@ -56,18 +56,38 @@ return [
     ],
     'json'      => [
         'v2' => [
-            'config'  => [
+            'config'     => [
                 'html_language',
                 'date_time_fns',
                 'month_and_day_fns',
                 'date_time_fns_short',
             ],
+            'form' => [
+                'title',
+
+            ],
             'validation' => [
                 'bad_type_source',
-                'bad_type_destination'
+                'bad_type_destination',
             ],
-            'firefly' => [
+            'firefly'    => [
                 'spent',
+                'administration_owner',
+                'administration_you',
+                'administration_role_owner',
+                'administration_role_ro',
+                'administration_role_mng_trx',
+                'administration_role_mng_meta',
+                'administration_role_mng_budgets',
+                'administration_role_mng_piggies',
+                'administration_role_mng_subscriptions',
+                'administration_role_mng_rules',
+                'administration_role_mng_recurring',
+                'administration_role_mng_webhooks',
+                'administration_role_mng_currencies',
+                'administration_role_view_reports',
+                'administration_role_full',
+                'new_administration_created',
                 'left',
                 'paid',
                 'errors_submission_v2',
