@@ -11,6 +11,7 @@ use Symfony\Component\Console\Application;
 use App\Command\FixTranslationWarning;
 use App\Command\ExtractChangelog;
 use App\Command\ReplaceVersion;
+use App\Command\SyncMetaFiles;
 
 require 'vendor/autoload.php';
 
@@ -18,6 +19,7 @@ $application = new Application('FF3 Support Tool', '3.0');
 
 // commands:
 $application->add(new CleanupChangelog);
+$application->add(new SyncMetaFiles);
 $application->add(new CleanupCode);
 $application->add(new FixTranslationWarning);
 $application->add(new GenLanguageJson);
