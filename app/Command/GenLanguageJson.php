@@ -57,7 +57,6 @@ class GenLanguageJson extends Command
         $this->input  = $input;
         $this->output = $output;
         $version      = (string)$this->input->getArgument('version');
-        $root         = $this->configuration['paths']['firefly_iii'];
         $paths        = $this->getStoragePaths($version);
         $result       = [];
 
