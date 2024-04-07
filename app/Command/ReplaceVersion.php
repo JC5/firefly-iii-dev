@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +29,7 @@ class ReplaceVersion extends Command
      * @param OutputInterface $output
      *
      * @return int|null|void
-     * @throws \Exception
+     * @throws Exception
      *
      * TODO fix the search/replace.
      */

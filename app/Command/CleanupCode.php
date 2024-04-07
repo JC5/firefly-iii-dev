@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Exception;
 use League\CLImate\CLImate;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function in_array;
 
 /**
  * Class CleanupCode
@@ -46,22 +48,12 @@ class CleanupCode extends Command
 
         $this->paths = [];
         foreach ($paths as $path) {
-            if('' !== $config['paths']['firefly_iii']) {
+            if ('' !== $config['paths']['firefly_iii']) {
                 $this->paths[] = sprintf('%s/%s', $config['paths']['firefly_iii'], $path);
             }
-            if('' !== $config['paths']['data']) {
+            if ('' !== $config['paths']['data']) {
                 $this->paths[] = sprintf('%s/%s', $config['paths']['data'], $path);
             }
-        }
-    }
-
-    /**
-     * @param string $name
-     */
-    function removeExecFlag(string $name): void
-    {
-        if (is_executable($name)) {
-            exec(sprintf('chmod a-x %s', escapeshellarg($name)));
         }
     }
 
@@ -80,7 +72,7 @@ class CleanupCode extends Command
      * @param OutputInterface $output
      *
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -99,7 +91,7 @@ class CleanupCode extends Command
                         // get extension:
                         $parts = explode('.', $name);
                         $ext   = $parts[count($parts) - 1];
-                        if (\in_array($ext, $this->extensions, true)) {
+                        if (in_array($ext, $this->extensions, true)) {
                             $files[] = $name;
                             $count++;
                         }
@@ -160,19 +152,6 @@ class CleanupCode extends Command
     }
 
     /**
-     * @param string $file
-     */
-    private function detectDoubleCopyright(string $file): void
-    {
-        $content        = file_get_contents($file);
-        $countEmail     = substr_count($content, 'Copyright (c)');
-        $countCopyright = substr_count($content, 'Affero');
-        if ($countCopyright > 3 && $countEmail > 1) {
-            $this->climate->out(sprintf('File %s has multiple copyright statements (%d and %d).', $file, $countEmail, $countCopyright));
-        }
-    }
-
-    /**
      * @param string $name
      */
     private function checkForUTF(string $name): void
@@ -186,6 +165,29 @@ class CleanupCode extends Command
         }
         if ("ASCII" !== $result && 'UTF-8' !== $result) {
             $this->climate->red(sprintf('%s is %s instead of UTF8!', $name, var_export($result, true)));
+        }
+    }
+
+    /**
+     * @param string $name
+     */
+    function removeExecFlag(string $name): void
+    {
+        if (is_executable($name)) {
+            exec(sprintf('chmod a-x %s', escapeshellarg($name)));
+        }
+    }
+
+    /**
+     * @param string $file
+     */
+    private function detectDoubleCopyright(string $file): void
+    {
+        $content        = file_get_contents($file);
+        $countEmail     = substr_count($content, 'Copyright (c)');
+        $countCopyright = substr_count($content, 'Affero');
+        if ($countCopyright > 3 && $countEmail > 1) {
+            $this->climate->out(sprintf('File %s has multiple copyright statements (%d and %d).', $file, $countEmail, $countCopyright));
         }
     }
 }

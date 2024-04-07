@@ -15,6 +15,7 @@ use App\Command\SyncMetaFiles;
 
 require 'vendor/autoload.php';
 
+
 $application = new Application('FF3 Support Tool', '3.0');
 
 // commands:

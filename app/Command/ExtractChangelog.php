@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,30 +30,30 @@ class ExtractChangelog extends Command
      * @param OutputInterface $output
      *
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         include(VARIABLES);
         $changelog = sprintf('%s/changelog.md', $_ENV['FIREFLY_III_ROOT']);
-        if(!file_exists($changelog)) {
+        if (!file_exists($changelog)) {
             $output->writeln('Changelog does not exist.');
             return 1;
         }
-        $content = file_get_contents($changelog);
-        $lines   = explode("\n", $content);
+        $content        = file_get_contents($changelog);
+        $lines          = explode("\n", $content);
         $changelogLines = [];
-        $started = false;
-        foreach($lines as $line) {
+        $started        = false;
+        foreach ($lines as $line) {
             $line = trim($line);
-            if(str_starts_with($line, '## ') && false === $started && 0 === count($changelogLines)) {
+            if (str_starts_with($line, '## ') && false === $started && 0 === count($changelogLines)) {
                 $started = true;
                 continue;
             }
-            if(str_starts_with( $line, '## ') && true === $started) {
+            if (str_starts_with($line, '## ') && true === $started) {
                 break;
             }
-            if($started) {
+            if ($started) {
                 $changelogLines[] = $line;
             }
         }

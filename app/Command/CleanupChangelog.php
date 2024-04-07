@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
@@ -30,7 +31,7 @@ class CleanupChangelog extends Command
      * @param OutputInterface $output
      *
      * @return int|null|void
-     * @throws \Exception
+     * @throws Exception
      *
      * TODO fix the search/replace.
      */

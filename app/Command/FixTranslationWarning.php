@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Exception;
 use League\CLImate\CLImate;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use function App\Command\mb_detect_encoding;
 
 /**
  * Class FixTranslationWarning
@@ -48,7 +48,7 @@ class FixTranslationWarning extends Command
      * @param OutputInterface $output
      *
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -87,16 +87,16 @@ class FixTranslationWarning extends Command
             $lines    = explode("\n", $content);
             foreach ($lines as $line) {
                 $temp = trim($line);
-                if($search !== $temp) {
+                if ($search !== $temp) {
                     $newLines[] = $line;
                 }
-                if($search === $temp) {
+                if ($search === $temp) {
                     $newLines[] = $warning;
                     $count++;
                 }
             }
             $newContent = implode("\n", $newLines);
-            if(str_ends_with($newContent, "*/\n")) {
+            if (str_ends_with($newContent, "*/\n")) {
                 $newContent = trim($newContent);
             }
             file_put_contents($file, $newContent);
