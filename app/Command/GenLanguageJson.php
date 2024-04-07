@@ -81,8 +81,8 @@ class GenLanguageJson extends Command
     {
         $return = [];
         if ('v1' === $version) {
-            $return['locales']     = sprintf('%s/resources/assets/js/locales', $this->configuration['paths']['firefly_iii']);
-            $return['locale_file'] = sprintf('%s/resources/assets/js/locales/%%s.json', $this->configuration['paths']['firefly_iii']);
+            $return['locales']     = sprintf('%s/resources/assets/v1/src/locales', $this->configuration['paths']['firefly_iii']);
+            $return['locale_file'] = sprintf('%s/resources/assets/v1/src/locales/%%s.json', $this->configuration['paths']['firefly_iii']);
         }
         if ('v2' === $version) {
             $return['locales']     = sprintf('%s/public/v2/i18n', $this->configuration['paths']['firefly_iii']);
