@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 define('VARIABLES', sprintf('%s/variables.php', __DIR__));
 
-use App\Command\BuildOldJs;
 use App\Command\CleanupChangelog;
 use App\Command\CleanupCode;
 use App\Command\GenLanguageJson;
@@ -24,7 +23,6 @@ $application->add(new SyncMetaFiles);
 $application->add(new CleanupCode);
 $application->add(new FixTranslationWarning);
 $application->add(new GenLanguageJson);
-$application->add(new BuildOldJs());
 $application->add(new ExtractChangelog());
 $application->add(new ReplaceVersion());
 
