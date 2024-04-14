@@ -51,7 +51,7 @@ class ReplaceVersion extends Command
         $configFile = sprintf('%s/config/firefly.php', $_ENV['FIREFLY_III_ROOT']);
         if (!file_exists($configFile)) {
             $output->writeln(sprintf('Config file %s does not exist, try "importer.php".', $configFile));
-            $configFile = sprintf('%s/config/firefly.php', $_ENV['FIREFLY_III_ROOT']);
+            $configFile = sprintf('%s/config/importer.php', $_ENV['FIREFLY_III_ROOT']);
             if (!file_exists($configFile)) {
                 $output->writeln(sprintf('Config file %s does not exist, giving up.', $configFile));
                 return 1;
