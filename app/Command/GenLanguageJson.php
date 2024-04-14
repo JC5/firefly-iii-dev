@@ -31,7 +31,13 @@ class GenLanguageJson extends Command
         parent::__construct($name);
 
         $this->configuration = require(VARIABLES);
-        $this->langConfig    = require(sprintf('%s/config/translations.php', $this->configuration['paths']['firefly_iii']));
+        $file                = sprintf('%s/config/translations.php', $this->configuration['paths']['firefly_iii']);
+        if (file_exists($file)) {
+            $this->langConfig = require($file);
+        }
+        if (!file_exists($file)) {
+            $this->langConfig = [];
+        }
     }
 
     /**
