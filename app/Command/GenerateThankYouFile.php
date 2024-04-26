@@ -84,7 +84,7 @@ class GenerateThankYouFile extends Command
             $date->setTimestamp($timestamp);
             $year           = $date->format('Y');
             $years[$year]   = $years[$year] ?? [];
-            $years[$year][] = $author;
+            $years[$year][$timestamp] = $author;
         }
 
 
@@ -96,6 +96,7 @@ class GenerateThankYouFile extends Command
         $thanks .= PHP_EOL;
 
         foreach ($years as $year => $authors) {
+            krsort($authors);
             $thanks .= sprintf('## %s', $year);
             $thanks .= PHP_EOL;
             foreach ($authors as $key => $author) {
