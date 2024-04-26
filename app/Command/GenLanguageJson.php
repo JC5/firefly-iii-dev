@@ -179,7 +179,7 @@ class GenLanguageJson extends Command
      */
     private function storeLanguage(string $language, string $version, array $content, array $paths): void
     {
-        $this->output->writeln(sprintf('storeLanguage("%s", array, array', $language));
+        $this->output->writeln(sprintf('storeLanguage("%s", array, array)', $language));
 
         $code         = $content['config']['html_language'];
         $json         = json_encode($content, JSON_PRETTY_PRINT, 16);

@@ -5,6 +5,7 @@ define('VARIABLES', sprintf('%s/variables.php', __DIR__));
 
 use App\Command\CleanupChangelog;
 use App\Command\CleanupCode;
+use App\Command\GenerateThankYouFile;
 use App\Command\GenLanguageJson;
 use Symfony\Component\Console\Application;
 use App\Command\FixTranslationWarning;
@@ -25,5 +26,6 @@ $application->add(new FixTranslationWarning);
 $application->add(new GenLanguageJson);
 $application->add(new ExtractChangelog());
 $application->add(new ReplaceVersion());
+$application->add(new GenerateThankYouFile());
 
 $application->run();
