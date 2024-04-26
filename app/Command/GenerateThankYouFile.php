@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Command;
+
 use DateTime;
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
@@ -46,10 +48,10 @@ class GenerateThankYouFile extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config = include(VARIABLES);
+        $config  = include(VARIABLES);
         $command = sprintf('cd %s && git log', $config['paths']['firefly_iii']);
-        $ignore = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'root'];
-        $lines = [];
+        $ignore  = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'root'];
+        $lines   = [];
         $history = [];
 
         // execute command:
@@ -62,7 +64,7 @@ class GenerateThankYouFile extends Command
             $line = trim($line);
             if (str_starts_with($line, 'Author:')) {
                 $previousAuthor = trim(strip_tags(trim(str_replace('Author: ', '', $line))));
-                $previousAuthor = str_replace('@',' & ', $previousAuthor);
+                $previousAuthor = str_replace('@', ' & ', $previousAuthor);
             }
             if (null !== $previousAuthor && !array_key_exists($previousAuthor, $history)) {
                 $history[$previousAuthor] = time();
@@ -82,8 +84,8 @@ class GenerateThankYouFile extends Command
         foreach ($history as $author => $timestamp) {
             $date = new DateTime();
             $date->setTimestamp($timestamp);
-            $year           = $date->format('Y');
-            $years[$year]   = $years[$year] ?? [];
+            $year                     = $date->format('Y');
+            $years[$year]             = $years[$year] ?? [];
             $years[$year][$timestamp] = $author;
         }
 
