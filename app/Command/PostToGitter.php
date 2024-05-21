@@ -7,6 +7,7 @@ namespace App\Command;
 use Exception;
 use GuzzleHttp\Client;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,8 +22,9 @@ class PostToGitter extends Command
     protected function configure(): void
     {
         $this
-            ->setName('ff3:post-to-gitter')
-            ->setDescription('Post to gitter');
+            ->setName('ff3:post-to-gitter ')
+            ->setDescription('Post to gitter')
+            ->addArgument('type', InputArgument::REQUIRED, 'For which version?');
     }
 
     /**
@@ -35,25 +37,33 @@ class PostToGitter extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config     = include(VARIABLES);
+        $type = (string) $input->getArgument('type');
+        if ('issue' === $type) {
+            $this->postIssue($output);
+        }
+        return 0;
+    }
+
+    private function postIssue(OutputInterface $output): void
+    {
         $number     = (string) (getenv('ISSUE_NUMBER') ?? '');
         $repository = (string) (getenv('REPOSITORY') ?? '');
         $title      = (string) (getenv('ISSUE_TITLE') ?? '');
         $user       = (string) (getenv('ISSUE_USER') ?? '');
-        $token = (string) (getenv('GITTER_TOKEN') ?? '');
+        $token      = (string) (getenv('GITTER_TOKEN') ?? '');
 
         if ('' === $number) {
             $output->writeln('No issue number provided.');
-            return 1;
+            return;
         }
-        $full  = 'https://%s/_matrix/client/v3/rooms/%s/send/m.room.message/%s';
-        $host = 'gitter.ems.host';
-        $room = '!LZoXfuHJSZYXgxfOOb:gitter.im';
+
+        $full   = 'https://%s/_matrix/client/v3/rooms/%s/send/m.room.message/%s';
+        $host   = 'gitter.ems.host';
+        $room   = '!LZoXfuHJSZYXgxfOOb:gitter.im';
         $client = new Client();
 
-        $message = sprintf('🤖 New issue opened by [%s](https://github.com/%s): [%s](https://github.com/%s/issues/%s)', $user, $user, $title, $repository, $number);
-        $messageHtml = sprintf('🤖 New issue opened by <a href="https://github.com/%s" title="%s">%s</a>: <a href="https://github.com/%s/issues/%s" title="%s">%s</a>', $user, $user, $user, $repository, $number, $title, $title);
-
+        $message     = sprintf('🤖 On GitHub, an issue was opened by [%s](https://github.com/%s): "[%s](https://github.com/%s/issues/%s)"', $user, $user, $title, $repository, $number);
+        $messageHtml = sprintf('🤖 On GitHub, an issue was opened by <a href="https://github.com/%s" title="%s">%s</a>: "<a href="https://github.com/%s/issues/%s" title="%s">%s</a>"', $user, $user, $user, $repository, $number, $title, $title);
 
 
         $res = $client->put(sprintf($full, $host, $room, time()), [
@@ -64,16 +74,12 @@ class PostToGitter extends Command
             'body'    => json_encode(
                 [
                     'body'           => $message,
-                    'format' => 'org.matrix.custom.html',
+                    'format'         => 'org.matrix.custom.html',
                     'formatted_body' => $messageHtml,
                     'msgtype'        => 'm.text',
                 ]),
         ]);
-        var_dump((string) $res->getStatusCode());
-
-        echo 'Post to Gitter here.';
-
-        return 0;
+        $output->writeln(sprintf('Result of PUT: %d', $res->getStatusCode()));
     }
 
 }
