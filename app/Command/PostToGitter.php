@@ -17,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PostToGitter extends Command
 {
     private string $room = '!epdtwMcKTscMlFxeBi:gitter.im';
+
     /**
      *
      */
@@ -62,8 +63,8 @@ class PostToGitter extends Command
         $host   = 'gitter.ems.host';
         $client = new Client();
 
-        $message     = sprintf('🤖 On GitHub, an issue was opened by [%s](https://github.com/%s): "[%s](https://github.com/%s/issues/%s)"', $user, $user, $title, $repository, $number);
-        $messageHtml = sprintf('🤖 On GitHub, an issue was opened by <a href="https://github.com/%s" title="%s">%s</a>: "<a href="https://github.com/%s/issues/%s" title="%s">%s</a>"', $user, $user, $user, $repository, $number, $title, $title);
+        $message     = sprintf('🤖 On GitHub, a new issue was opened by **%s**: "[%s](https://github.com/%s/issues/%s)"', $user, $title, $repository, $number);
+        $messageHtml = sprintf('🤖 On GitHub, a new issue was opened by <b>%s</b>: "<a href="https://github.com/%s/issues/%s" title="%s">%s</a>"', $user, $repository, $number, $title, $title);
 
 
         $res = $client->put(sprintf($full, $host, $this->room, time()), [
