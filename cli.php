@@ -12,6 +12,7 @@ use App\Command\FixTranslationWarning;
 use App\Command\ExtractChangelog;
 use App\Command\ReplaceVersion;
 use App\Command\SyncMetaFiles;
+use App\Command\PostToGitter;
 
 require 'vendor/autoload.php';
 
@@ -27,5 +28,6 @@ $application->add(new GenLanguageJson);
 $application->add(new ExtractChangelog());
 $application->add(new ReplaceVersion());
 $application->add(new GenerateThankYouFile());
+$application->add(new PostToGitter());
 
 $application->run();
