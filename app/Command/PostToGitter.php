@@ -51,6 +51,11 @@ class PostToGitter extends Command
         $room = '!LZoXfuHJSZYXgxfOOb:gitter.im';
         $client = new Client();
 
+        $message = sprintf('🤖 New issue opened by [%s](https://github.com/%s): [%s](https://github.com/%s/issues/%s)', $user, $user, $title, $repository, $number);
+        $messageHtml = sprintf('🤖 New issue opened by <a href="https://github.com/%s" title="%s">%s</a>: <a href="https://github.com/%s/issues/%s" title="%s">%s</a>', $user, $user, $user, $repository, $number, $title, $title);
+
+
+
         $res = $client->put(sprintf($full, $host, $room, time()), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
@@ -58,28 +63,13 @@ class PostToGitter extends Command
             ],
             'body'    => json_encode(
                 [
-                    "body"           => "test I am **a robot**",
-                    "formatted_body" => "test I am <b>a robot</b>",
-                    "msgtype"        => "m.text",
+                    'body'           => $message,
+                    'format' => 'org.matrix.custom.html',
+                    'formatted_body' => $messageHtml,
+                    'msgtype'        => 'm.text',
                 ]),
         ]);
         var_dump((string) $res->getStatusCode());
-//
-//
-//
-//$session = $m->login('m.login.password', 'alice', 'passw0rd');
-//
-//
-//$m = new Matrix('https://gitter.ems.host/', 'secret-token');
-//
-//
-//
-//
-//$room = new Room('#test:example.org:8448', '!room-id:example.org:8448');
-//$event_id = $session->send_message($room, 'm.text', "hello");
-//
-
-
 
         echo 'Post to Gitter here.';
 
