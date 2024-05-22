@@ -25,8 +25,8 @@ class PostToGitter extends Command
     {
         $this
             ->setName('ff3:post-to-gitter ')
-            ->setDescription('Post to gitter')
-            ->addArgument('type', InputArgument::REQUIRED, 'For which version?');
+            ->setDescription('Posts to Gitter using a token.')
+            ->addArgument('type', InputArgument::REQUIRED, 'Which issue type?');
     }
 
     /**
@@ -39,15 +39,19 @@ class PostToGitter extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln('Will post to Gitter.');
         $type = (string) $input->getArgument('type');
         if ('issue' === $type) {
             $this->postIssue($output);
+            return 0;
         }
+        $output->writeln(sprintf('Did not recognize issue type "%s", no post was made.', $type));
         return 0;
     }
 
     private function postIssue(OutputInterface $output): void
     {
+        $output->writeln('Will post about an issue to Gitter.');
         $number     = (string) (getenv('ISSUE_NUMBER') ?? '');
         $repository = (string) (getenv('REPOSITORY') ?? '');
         $title      = (string) (getenv('ISSUE_TITLE') ?? '');
@@ -58,6 +62,10 @@ class PostToGitter extends Command
             $output->writeln('No issue number provided.');
             return;
         }
+        $output->writeln(sprintf('Issue number: #%s', $number));
+        $output->writeln(sprintf('Issue title: %s', $title));
+        $output->writeln(sprintf('Issue user: %s', $user));
+        $output->writeln(sprintf('GitHub repository: %s', $repository));
 
         $full   = 'https://%s/_matrix/client/v3/rooms/%s/send/m.room.message/%s';
         $host   = 'gitter.ems.host';
@@ -80,7 +88,7 @@ class PostToGitter extends Command
                     'msgtype'        => 'm.text',
                 ]),
         ]);
-        $output->writeln(sprintf('Result of PUT: %d', $res->getStatusCode()));
+        $output->writeln(sprintf('Result of PUT: HTTP %d', $res->getStatusCode()));
     }
 
 }
