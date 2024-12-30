@@ -31,7 +31,9 @@ class GenLanguageJson extends Command
         parent::__construct($name);
 
         $this->configuration = require(VARIABLES);
+        $this->output->writeln('GenLanguageJson::__construct()', $this->configuration);
         $file                = sprintf('%s/config/translations.php', $this->configuration['paths']['firefly_iii']);
+        $this->output->writeln(sprintf('File is "%s"', $file));
         if (file_exists($file)) {
             $this->langConfig = require($file);
         }
@@ -180,7 +182,10 @@ class GenLanguageJson extends Command
     private function storeLanguage(string $language, string $version, array $content, array $paths): void
     {
         $this->output->writeln(sprintf('storeLanguage("%s", array, array)', $language));
-
+        if(!array_key_exists('config', $content)) {
+            echo sprintf('No config key in content for language %s!', $language);
+            exit;
+        }
         $code         = $content['config']['html_language'];
         $json         = json_encode($content, JSON_PRETTY_PRINT, 16);
         $destinations = [];

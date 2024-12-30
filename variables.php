@@ -7,7 +7,7 @@ $dotenv->safeLoad();
 
 $root     = $_ENV['FIREFLY_III_ROOT'] ?? '';
 $dataRoot = $_ENV['DATA_IMPORTER_ROOT'] ?? '';
-$allRoot  = '/sites/FF3';
+$allRoot  = '/ff3';
 
 return [
     'gh_token'  => $_ENV['GH_TOKEN'],
