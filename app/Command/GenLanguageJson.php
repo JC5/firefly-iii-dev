@@ -31,10 +31,7 @@ class GenLanguageJson extends Command
         parent::__construct($name);
 
         $this->configuration = require(VARIABLES);
-        echo 'GenLanguageJson::__construct()'. PHP_EOL;
-        echo json_encode($this->configuration). PHP_EOL;
         $file                = sprintf('%s/config/translations.php', $this->configuration['paths']['firefly_iii']);
-        echo sprintf('File is "%s"', $file) . PHP_EOL;
         if (file_exists($file)) {
             $this->langConfig = require($file);
         }
