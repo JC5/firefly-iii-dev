@@ -50,7 +50,7 @@ class GenerateThankYouFile extends Command
     {
         $config  = include(VARIABLES);
         $command = sprintf('cd %s && git log', $config['paths']['firefly_iii']);
-        $ignore  = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D','JC5', 'root'];
+        $ignore  = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D','JC5', 'root','github-actions[bot]'];
         $lines   = [];
         $history = [];
 
