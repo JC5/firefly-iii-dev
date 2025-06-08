@@ -61,13 +61,13 @@ class GenerateThankYouFile extends Command
             $shortToolName = 'Firefly III Data Importer';
         }
 
-        $command = sprintf('cd %s && git log', $path);
         $ignore = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'JC5', 'root', 'github-actions[bot]'];
         $lines = [];
         $history = [];
 
-        // execute command:
-        exec($command, $lines);
+        // execute commands
+        exec(sprintf('cd %s && git config --global --add safe.directory %s', $path, $path));
+        exec(sprintf('cd %s && git log', $path), $lines);
 
         $previousAuthor = null;
 
