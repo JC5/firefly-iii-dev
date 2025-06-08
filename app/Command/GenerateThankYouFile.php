@@ -17,8 +17,6 @@ use Symfony\Component\Console\Input\InputArgument;
 class GenerateThankYouFile extends Command
 {
     private CLImate $climate;
-    private string  $path;
-    private InputInterface  $input;
 
     /**
      * CleanupCode constructor.
@@ -44,7 +42,7 @@ class GenerateThankYouFile extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int
@@ -52,20 +50,20 @@ class GenerateThankYouFile extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $product      = (string)$this->input->getArgument('product');
-        $config  = include(VARIABLES);
+        $product = (string)$input->getArgument('product');
+        $config = include(VARIABLES);
         $path = $config['paths']['firefly_iii'];
         $toolName = 'Firefly III';
         $shortToolName = 'Firefly III';
-        if('data-importer' === $product) {
+        if ('data-importer' === $product) {
             $path = $config['paths']['data'];
             $toolName = 'the Firefly III Data Importer';
             $shortToolName = 'Firefly III Data Importer';
         }
 
         $command = sprintf('cd %s && git log', $path);
-        $ignore  = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D','JC5', 'root','github-actions[bot]'];
-        $lines   = [];
+        $ignore = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'JC5', 'root', 'github-actions[bot]'];
+        $lines = [];
         $history = [];
 
         // execute command:
@@ -86,7 +84,7 @@ class GenerateThankYouFile extends Command
             if (str_starts_with($line, 'Date:')) {
                 $dateString = trim(str_replace('Date: ', '', $line));
                 $dateObject = new DateTime($dateString);
-                $epoch      = $dateObject->getTimestamp();
+                $epoch = $dateObject->getTimestamp();
                 if ($epoch < $history[$previousAuthor]) {
                     $history[$previousAuthor] = $epoch;
                 }
@@ -98,8 +96,8 @@ class GenerateThankYouFile extends Command
         foreach ($history as $author => $timestamp) {
             $date = new DateTime();
             $date->setTimestamp($timestamp);
-            $year                     = $date->format('Y');
-            $years[$year]             = $years[$year] ?? [];
+            $year = $date->format('Y');
+            $years[$year] = $years[$year] ?? [];
             $years[$year][$timestamp] = $author;
         }
 
@@ -107,7 +105,7 @@ class GenerateThankYouFile extends Command
         krsort($years);
 
         $thanks = '# Thank you! :tada: :heart: :tada:' . PHP_EOL . PHP_EOL;
-        $thanks .= sprintf('Over time, many people have contributed to %s. Their efforts are not always visible, but always remembered and appreciated.',$toolName) . PHP_EOL;
+        $thanks .= sprintf('Over time, many people have contributed to %s. Their efforts are not always visible, but always remembered and appreciated.', $toolName) . PHP_EOL;
         $thanks .= sprintf('Please find below all the people who contributed to the %s code. Their names are mentioned in the year of their first contribution.', $shortToolName) . PHP_EOL;
         $thanks .= PHP_EOL;
 
