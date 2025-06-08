@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\Command;
 
 use DateTime;
+use Exception;
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class GenerateThankYouFile
@@ -16,6 +18,7 @@ class GenerateThankYouFile extends Command
 {
     private CLImate $climate;
     private string  $path;
+    private InputInterface  $input;
 
     /**
      * CleanupCode constructor.
@@ -36,6 +39,7 @@ class GenerateThankYouFile extends Command
     {
         $this
             ->setName('ff3:thank-you')
+            ->addArgument('product', InputArgument::OPTIONAL, 'For which product?')
             ->setDescription('Generate thank you file.');
     }
 
@@ -48,8 +52,18 @@ class GenerateThankYouFile extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $product      = (string)$this->input->getArgument('product');
         $config  = include(VARIABLES);
-        $command = sprintf('cd %s && git log', $config['paths']['firefly_iii']);
+        $path = $config['paths']['firefly_iii'];
+        $toolName = 'Firefly III';
+        $shortToolName = 'Firefly III';
+        if('data-importer' === $product) {
+            $path = $config['paths']['data'];
+            $toolName = 'the Firefly III Data Importer';
+            $shortToolName = 'Firefly III Data Importer';
+        }
+
+        $command = sprintf('cd %s && git log', $path);
         $ignore  = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D','JC5', 'root','github-actions[bot]'];
         $lines   = [];
         $history = [];
@@ -93,8 +107,8 @@ class GenerateThankYouFile extends Command
         krsort($years);
 
         $thanks = '# Thank you! :tada: :heart: :tada:' . PHP_EOL . PHP_EOL;
-        $thanks .= 'Over time, many people have contributed to Firefly III. Their efforts are not always visible, but always remembered and appreciated.' . PHP_EOL;
-        $thanks .= 'Please find below all the people who contributed to the Firefly III code. Their names are mentioned in the year of their first contribution.' . PHP_EOL;
+        $thanks .= sprintf('Over time, many people have contributed to %s. Their efforts are not always visible, but always remembered and appreciated.',$toolName) . PHP_EOL;
+        $thanks .= sprintf('Please find below all the people who contributed to the %s code. Their names are mentioned in the year of their first contribution.', $shortToolName) . PHP_EOL;
         $thanks .= PHP_EOL;
 
         foreach ($years as $year => $authors) {
