@@ -62,11 +62,16 @@ class ReplaceVersion extends Command
         $lines    = explode("\n", $content);
         foreach ($lines as $index => $line) {
             $trimmed = trim($line);
+            // replace version.
             if (str_starts_with($trimmed, "'version'")) {
                 $newLines[] = sprintf("'version' => '%s',", $fullVersion);
                 $output->writeln(sprintf('Replaced version in line #%d', $index));
             }
-            if (!str_starts_with($trimmed, "'version'")) {
+            if (str_starts_with($trimmed, "'build_time'")) {
+                $newLines[] = sprintf("'build_time' => %d,", time());
+                $output->writeln(sprintf('Replaced build_time in line #%d', $index));
+            }
+            if (!str_starts_with($trimmed, "'version'") && !str_starts_with($trimmed, "'build_time'")) {
                 $newLines[] = $line;
             }
         }
