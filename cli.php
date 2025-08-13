@@ -5,6 +5,7 @@ define('VARIABLES', sprintf('%s/variables.php', __DIR__));
 
 use App\Command\CleanupChangelog;
 use App\Command\CleanupCode;
+use App\Command\GenerateReleaseNotes;
 use App\Command\GenerateThankYouFile;
 use App\Command\GenLanguageJson;
 use Symfony\Component\Console\Application;
@@ -23,6 +24,7 @@ $application = new Application('FF3 Support Tool', '3.0');
 $application->add(new CleanupChangelog);
 $application->add(new SyncMetaFiles);
 $application->add(new CleanupCode);
+$application->add(new GenerateReleaseNotes());
 $application->add(new FixTranslationWarning);
 $application->add(new GenLanguageJson);
 $application->add(new ExtractChangelog());
