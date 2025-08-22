@@ -36,22 +36,10 @@ class GenerateReleaseNotes extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $config    = include(VARIABLES);
-        $changelog = null;
         $product   = (string)$input->getArgument('product');
         $version   = (string)$input->getArgument('version');
-        $path      = null;
-        if ('firefly-iii' === $product) {
-            $path      = $config['paths']['firefly_iii'];
-            $changelog = sprintf('%s/changelog.md', $path);
-        }
-        if ('data-importer' === $product) {
-            $path      = $config['paths']['data'];
-            $changelog = sprintf('%s/changelog.md', $path);
-        }
-        if (null === $changelog) {
-            $output->writeln(sprintf('Unknown product "%s".', $product));
-            return Command::FAILURE;
-        }
+        $path      = $config['paths']['firefly_iii'];
+        $changelog = sprintf('%s/changelog.md', $path);
 
         if (!file_exists($changelog)) {
             $output->writeln(sprintf('Changelog for product "%s" does not exist.', $product));
