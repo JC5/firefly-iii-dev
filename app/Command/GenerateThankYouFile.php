@@ -61,7 +61,7 @@ class GenerateThankYouFile extends Command
             $shortToolName = 'Firefly III Data Importer';
         }
 
-        $ignore = ['unknown', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'JC5', 'root', 'github-actions[bot]'];
+        $ignore = ['unknown','=', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'JC5', 'root', 'github-actions[bot]'];
         $lines = [];
         $history = [];
 
