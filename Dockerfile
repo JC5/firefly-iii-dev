@@ -2,16 +2,21 @@
 FROM php:8.5-cli
 
 RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y git zip unzip ca-certificates curl gnupg
-RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt install nodejs -y
 
-RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
-RUN echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN DEBIAN_FRONTEND=noninteractive apt update
-RUN DEBIAN_FRONTEND=noninteractive apt -y install yarn
+# Use bash for the shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# install nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+# set env
+ENV NVM_DIR=/root/.nvm
+
+# install node
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm install 20"
+
+# set cmd to bash
+CMD ["/bin/bash"]
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY . /usr/src/dev-tools
