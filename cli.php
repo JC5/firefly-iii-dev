@@ -18,18 +18,18 @@ use App\Command\PostToGitter;
 require 'vendor/autoload.php';
 
 
-$application = new Application('FF3 Support Tool', '3.0');
+$application = new Application('FF3 Support Tool', '3.1');
 
 // commands:
-$application->add(new CleanupChangelog);
-$application->add(new SyncMetaFiles);
-$application->add(new CleanupCode);
-$application->add(new GenerateReleaseNotes());
-$application->add(new FixTranslationWarning);
-$application->add(new GenLanguageJson);
-$application->add(new ExtractChangelog());
-$application->add(new ReplaceVersion());
-$application->add(new GenerateThankYouFile());
-$application->add(new PostToGitter());
+$application->addCommand(new CleanupChangelog);
+$application->addCommand(new SyncMetaFiles);
+$application->addCommand(new CleanupCode);
+$application->addCommand(new GenerateReleaseNotes());
+$application->addCommand(new FixTranslationWarning);
+$application->addCommand(new GenLanguageJson);
+$application->addCommand(new ExtractChangelog());
+$application->addCommand(new ReplaceVersion());
+$application->addCommand(new GenerateThankYouFile());
+$application->addCommand(new PostToGitter());
 
 $application->run();

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use Exception;
+
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Generate JSON files with translations in them,
  * Class GenLanguageJson
  */
+#[AsCommand(name: 'ff3-json-translations')]
 class GenLanguageJson extends Command
 {
     private array           $configuration;
@@ -36,6 +39,7 @@ class GenLanguageJson extends Command
             $this->langConfig = require($file);
         }
         if (!file_exists($file)) {
+            $this->output->writeln(sprintf('File "%s" does not exist.', $file));
             $this->langConfig = [];
         }
     }
@@ -50,7 +54,11 @@ class GenLanguageJson extends Command
             ->setDescription('Generate JSON files for language.')
             ->addArgument('version', InputArgument::REQUIRED, 'For which version?');
     }
-
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
@@ -58,10 +66,8 @@ class GenLanguageJson extends Command
      * @return int
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
-        $this->input  = $input;
-        $this->output = $output;
         $version      = (string)$this->input->getArgument('version');
         $paths        = $this->getStoragePaths($version);
         $result       = [];
@@ -93,6 +99,10 @@ class GenLanguageJson extends Command
         if ('v2' === $version) {
             $return['locales']     = sprintf('%s/public/v2/i18n', $this->configuration['paths']['firefly_iii']);
             $return['locale_file'] = sprintf('%s/public/v2/i18n/%%s.json', $this->configuration['paths']['firefly_iii']);
+        }
+        if ('v3' === $version) {
+            $return['locales']     = sprintf('%s/public/v3/i18n', $this->configuration['paths']['firefly_iii']);
+            $return['locale_file'] = sprintf('%s/public/v3/i18n/%%s.json', $this->configuration['paths']['firefly_iii']);
         }
 
         return $return;
@@ -181,8 +191,8 @@ class GenLanguageJson extends Command
     {
         $this->output->writeln(sprintf('storeLanguage("%s", array, array)', $language));
         if(!array_key_exists('config', $content)) {
-            echo sprintf('No config key in content for language %s!', $language);
-            exit;
+            $this->output->writeln(sprintf('No "config" key in content for language "%s". Skip it.', $language));
+            return;
         }
         $code         = $content['config']['html_language'];
         $json         = json_encode($content, JSON_PRETTY_PRINT, 16);
@@ -192,6 +202,10 @@ class GenLanguageJson extends Command
             $destinations[] = sprintf($paths['locale_file'], $code);
         }
         if ('v2' === $version) {
+            $destinations[] = sprintf($paths['locale_file'], $code);
+            $destinations[] = sprintf($paths['locale_file'], $language);
+        }
+        if ('v3' === $version) {
             $destinations[] = sprintf($paths['locale_file'], $code);
             $destinations[] = sprintf($paths['locale_file'], $language);
         }
