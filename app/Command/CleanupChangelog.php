@@ -16,6 +16,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CleanupChangelog extends Command
 {
+    private InputInterface  $input;
+    private OutputInterface $output;
+
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
+
     /**
      *
      */
@@ -27,15 +36,10 @@ class CleanupChangelog extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|null|void
-     * @throws Exception
-     *
      * TODO fix the search/replace.
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
+
     {
         $config = include(VARIABLES);
         $files  = [
@@ -45,7 +49,7 @@ class CleanupChangelog extends Command
 
         foreach ($files as $key => $file) {
             if (!file_exists($file)) {
-                $output->writeln(sprintf('The changelog for %s does not exist.', $key));
+                $this->output->writeln(sprintf('The changelog for %s does not exist.', $key));
                 continue;
             }
             $content = file_get_contents($file);
@@ -74,7 +78,7 @@ class CleanupChangelog extends Command
                     $res = $client->get($url, $opts);
                 } catch (RequestException $e) {
                     if (str_contains($e->getMessage(), '404')) {
-                        $output->writeln(sprintf('#%d is probably a discussion, retry!', $issue));
+                        $this->output->writeln(sprintf('#%d is probably a discussion, retry!', $issue));
                         $client          = new Client;
                         $url             = 'https://api.github.com/graphql';
                         $newOpts         = $opts;
@@ -85,9 +89,9 @@ class CleanupChangelog extends Command
                     }
 
                     if (str_contains($e->getMessage(), '401')) {
-                        $output->writeln(sprintf('Issue #%d is not an issue.', $issue));
-                        $output->writeln(sprintf('Exception is: %s', $e->getMessage()));
-                        $output->writeln('Bad token.');
+                        $this->output->writeln(sprintf('Issue #%d is not an issue.', $issue));
+                        $this->output->writeln(sprintf('Exception is: %s', $e->getMessage()));
+                        $this->output->writeln('Bad token.');
                         return 1;
                     }
                 }
@@ -113,12 +117,12 @@ class CleanupChangelog extends Command
                 }
 
                 $content = str_replace($issueFull, $replace, $content);
-                $output->writeln(sprintf('Parsed issue %s', $issueFull));
+                $this->output->writeln(sprintf('Parsed issue %s', $issueFull));
                 sleep(2);
             }
 
             file_put_contents($file, $content);
-            $output->writeln(sprintf('The changelog for %s has been parsed.', $key));
+            $this->output->writeln(sprintf('The changelog for %s has been parsed.', $key));
         }
 
         return 0;

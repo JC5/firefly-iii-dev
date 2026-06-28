@@ -17,10 +17,12 @@ use function in_array;
  */
 class CleanupCode extends Command
 {
-    private CLImate $climate;
-    private array   $extensions;
-    private array   $paths;
-    private array   $roots;
+    private CLImate         $climate;
+    private array           $extensions;
+    private InputInterface  $input;
+    private OutputInterface $output;
+    private array           $paths;
+    private array           $roots;
 
     /**
      * CleanupCode constructor.
@@ -57,6 +59,22 @@ class CleanupCode extends Command
         }
     }
 
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
+
+    /**
+     * @param string $name
+     */
+    function removeExecFlag(string $name): void
+    {
+        if (is_executable($name)) {
+            exec(sprintf('chmod a-x %s', escapeshellarg($name)));
+        }
+    }
+
     /**
      *
      */
@@ -67,14 +85,7 @@ class CleanupCode extends Command
             ->setDescription('Update code and fix minor things.');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
         clearstatcache();
         $files = [];
@@ -165,16 +176,6 @@ class CleanupCode extends Command
         }
         if ("ASCII" !== $result && 'UTF-8' !== $result) {
             $this->climate->red(sprintf('%s is %s instead of UTF8!', $name, var_export($result, true)));
-        }
-    }
-
-    /**
-     * @param string $name
-     */
-    function removeExecFlag(string $name): void
-    {
-        if (is_executable($name)) {
-            exec(sprintf('chmod a-x %s', escapeshellarg($name)));
         }
     }
 

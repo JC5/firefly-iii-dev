@@ -14,7 +14,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ExtractChangelog extends Command
 {
-use ExtractsChangelog;
+    use ExtractsChangelog;
+
+    private InputInterface  $input;
+    private OutputInterface $output;
+
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
 
     /**
      *
@@ -26,19 +35,12 @@ use ExtractsChangelog;
             ->setDescription('Extract latest changelog from changelog.md.');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
         include(VARIABLES);
         $changelog = sprintf('%s/changelog.md', $_ENV['FIREFLY_III_ROOT']);
         if (!file_exists($changelog)) {
-            $output->writeln('Changelog does not exist.');
+            $this->output->writeln('Changelog does not exist.');
             return Command::FAILURE;
         }
         $content = $this->extractChangelog($changelog);

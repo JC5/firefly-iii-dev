@@ -13,6 +13,15 @@ class GenerateReleaseNotes extends Command
 {
     use ExtractsChangelog;
 
+    private InputInterface  $input;
+    private OutputInterface $output;
+    
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
+
     /**
      *
      */
@@ -25,31 +34,23 @@ class GenerateReleaseNotes extends Command
             ->setDescription('Update and parse changelogs.');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return int|null|void
-     * @throws Exception
-     *
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
         $config    = include(VARIABLES);
-        $product   = (string)$input->getArgument('product');
-        $version   = (string)$input->getArgument('version');
+        $product   = (string)$this->input->getArgument('product');
+        $version   = (string)$this->input->getArgument('version');
         $path      = $config['paths']['firefly_iii'];
         $changelog = sprintf('%s/changelog.md', $path);
 
         if (!file_exists($changelog)) {
-            $output->writeln(sprintf('Changelog for product "%s" does not exist.', $product));
+            $this->output->writeln(sprintf('Changelog for product "%s" does not exist.', $product));
             return Command::FAILURE;
         }
         $changelogContent = $this->extractChangelog($changelog);
         $templateName     = $this->getTemplateName($version);
         $templatePath     = sprintf('%s/.github/release-notes/%s', $path, $templateName);
         if (!file_exists($templatePath)) {
-            $output->writeln(sprintf('Template "%s" does not exist.', $templatePath));
+            $this->output->writeln(sprintf('Template "%s" does not exist.', $templatePath));
             return Command::FAILURE;
         }
         $templateContent = (string)file_get_contents($templatePath);

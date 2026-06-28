@@ -13,7 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SyncMetaFiles extends Command
 {
-    private array $configuration;
+    private array           $configuration;
+    private InputInterface  $input;
+    private OutputInterface $output;
 
     /**
      * GenLanguageJson constructor.
@@ -27,6 +29,12 @@ class SyncMetaFiles extends Command
         $this->configuration = require(VARIABLES);
     }
 
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
+
     /**
      *
      */
@@ -37,26 +45,10 @@ class SyncMetaFiles extends Command
             ->setDescription('Sync meta files over all repositories.');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
         $this->syncPrTemplates();
         return Command::SUCCESS;
-    }
-
-    private function syncPrTemplates(): void
-    {
-        $directories = $this->configuration['sites'];
-        $template    = file_get_contents(__DIR__ . '/../../templates/pr.md');
-        foreach ($directories as $directory) {
-            $this->syncPrTemplateForDirectory(sprintf('%s/%s', $_ENV['FF3_ROOT'], $directory), $template);
-        }
     }
 
     private function syncPrTemplateForDirectory(string $directory, string $template): void
@@ -72,6 +64,15 @@ class SyncMetaFiles extends Command
         if (!file_exists($prTemplatePath)) {
             file_put_contents($prTemplatePath, $template);
             echo sprintf('Saved new template in %s', $prTemplatePath) . PHP_EOL;
+        }
+    }
+
+    private function syncPrTemplates(): void
+    {
+        $directories = $this->configuration['sites'];
+        $template    = file_get_contents(__DIR__ . '/../../templates/pr.md');
+        foreach ($directories as $directory) {
+            $this->syncPrTemplateForDirectory(sprintf('%s/%s', $_ENV['FF3_ROOT'], $directory), $template);
         }
     }
 

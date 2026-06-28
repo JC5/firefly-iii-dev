@@ -14,6 +14,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReplaceVersion extends Command
 {
+    private InputInterface  $input;
+    private OutputInterface $output;
+
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
+
     /**
      *
      */
@@ -25,35 +34,29 @@ class ReplaceVersion extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|null|void
-     * @throws Exception
-     *
      * TODO fix the search/replace.
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
         include(VARIABLES);
         $version     = (string)(getenv('FF_III_VERSION') ?? 'develop');
         $fullVersion = $version;
-        $output->writeln(sprintf('Will set version "%s" in firefly.php', $version));
+        $this->output->writeln(sprintf('Will set version "%s" in firefly.php', $version));
         if ('develop' === $version) {
             $fullVersion = sprintf('develop/%s', date('Y-m-d'));
-            $output->writeln(sprintf('For develop releases, the version gets a date: "%s"', $fullVersion));
+            $this->output->writeln(sprintf('For develop releases, the version gets a date: "%s"', $fullVersion));
         }
         if (str_starts_with($version, 'v')) {
             $fullVersion = substr($version, 1);
-            $output->writeln(sprintf('For normal releases, remove the "v": "%s"', $fullVersion));
+            $this->output->writeln(sprintf('For normal releases, remove the "v": "%s"', $fullVersion));
         }
 
         $configFile = sprintf('%s/config/firefly.php', $_ENV['FIREFLY_III_ROOT']);
         if (!file_exists($configFile)) {
-            $output->writeln(sprintf('Config file %s does not exist, try "importer.php".', $configFile));
+            $this->output->writeln(sprintf('Config file %s does not exist, try "importer.php".', $configFile));
             $configFile = sprintf('%s/config/importer.php', $_ENV['FIREFLY_III_ROOT']);
             if (!file_exists($configFile)) {
-                $output->writeln(sprintf('Config file %s does not exist, giving up.', $configFile));
+                $this->output->writeln(sprintf('Config file %s does not exist, giving up.', $configFile));
                 return 1;
             }
         }
@@ -65,11 +68,11 @@ class ReplaceVersion extends Command
             // replace version.
             if (str_starts_with($trimmed, "'version'")) {
                 $newLines[] = sprintf("'version' => '%s',", $fullVersion);
-                $output->writeln(sprintf('Replaced version in line #%d', $index));
+                $this->output->writeln(sprintf('Replaced version in line #%d', $index));
             }
             if (str_starts_with($trimmed, "'build_time'")) {
                 $newLines[] = sprintf("'build_time' => %d,", time());
-                $output->writeln(sprintf('Replaced build_time in line #%d', $index));
+                $this->output->writeln(sprintf('Replaced build_time in line #%d', $index));
             }
             if (!str_starts_with($trimmed, "'version'") && !str_starts_with($trimmed, "'build_time'")) {
                 $newLines[] = $line;

@@ -16,8 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class FixTranslationWarning extends Command
 {
-    private CLImate $climate;
-    private string  $path;
+    private CLImate         $climate;
+    private InputInterface  $input;
+    private OutputInterface $output;
+    private string          $path;
 
     /**
      * CleanupCode constructor.
@@ -33,6 +35,12 @@ class FixTranslationWarning extends Command
         $this->path    = sprintf('%s/resources/lang', $config['paths']['firefly_iii']);
     }
 
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
+
     /**
      *
      */
@@ -43,14 +51,7 @@ class FixTranslationWarning extends Command
             ->setDescription('Fix Crowdin warning.');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
         clearstatcache();
         $files = [];

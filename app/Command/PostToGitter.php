@@ -16,7 +16,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PostToGitter extends Command
 {
-    private string $room = '!epdtwMcKTscMlFxeBi:gitter.im';
+    private InputInterface  $input;
+    private OutputInterface $output;
+    private string          $room = '!epdtwMcKTscMlFxeBi:gitter.im';
+
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
 
     /**
      *
@@ -29,47 +37,39 @@ class PostToGitter extends Command
             ->addArgument('type', InputArgument::REQUIRED, 'Which issue type?');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     *
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
-        $output->writeln('Will post to Gitter.');
-        $type = (string) $input->getArgument('type');
+        $this->output->writeln('Will post to Gitter.');
+        $type = (string)$this->input->getArgument('type');
         if ('issue' === $type) {
-            $this->postIssue($output);
+            $this->postIssue();
             return 0;
         }
-        if('pr' === $type) {
-            $this->postPullRequest($output);
+        if ('pr' === $type) {
+            $this->postPullRequest();
             return 0;
         }
-        $output->writeln(sprintf('Did not recognize issue type "%s", no post was made.', $type));
+        $this->output->writeln(sprintf('Did not recognize issue type "%s", no post was made.', $type));
         return 0;
     }
 
-    private function postIssue(OutputInterface $output): void
+    private function postIssue(): void
     {
-        $output->writeln('Will post about an issue to Gitter.');
-        $number     = (string) (getenv('ISSUE_NUMBER') ?? '');
-        $repository = (string) (getenv('REPOSITORY') ?? '');
-        $title      = (string) (getenv('ISSUE_TITLE') ?? '');
-        $user       = (string) (getenv('ISSUE_USER') ?? '');
-        $token      = (string) (getenv('GITTER_TOKEN') ?? '');
+        $this->output->writeln('Will post about an issue to Gitter.');
+        $number     = (string)(getenv('ISSUE_NUMBER') ?? '');
+        $repository = (string)(getenv('REPOSITORY') ?? '');
+        $title      = (string)(getenv('ISSUE_TITLE') ?? '');
+        $user       = (string)(getenv('ISSUE_USER') ?? '');
+        $token      = (string)(getenv('GITTER_TOKEN') ?? '');
 
         if ('' === $number) {
-            $output->writeln('No issue number provided.');
+            $this->output->writeln('No issue number provided.');
             return;
         }
-        $output->writeln(sprintf('Issue number: #%s', $number));
-        $output->writeln(sprintf('Issue title: %s', $title));
-        $output->writeln(sprintf('Issue user: %s', $user));
-        $output->writeln(sprintf('GitHub repository: %s', $repository));
+        $this->output->writeln(sprintf('Issue number: #%s', $number));
+        $this->output->writeln(sprintf('Issue title: %s', $title));
+        $this->output->writeln(sprintf('Issue user: %s', $user));
+        $this->output->writeln(sprintf('GitHub repository: %s', $repository));
 
         $full   = 'https://%s/_matrix/client/v3/rooms/%s/send/m.room.message/%s';
         $host   = 'gitter.ems.host';
@@ -92,30 +92,30 @@ class PostToGitter extends Command
                     'msgtype'        => 'm.text',
                 ]),
         ]);
-        $output->writeln(sprintf('Result of PUT: HTTP %d', $res->getStatusCode()));
+        $this->output->writeln(sprintf('Result of PUT: HTTP %d', $res->getStatusCode()));
     }
 
-    private function postPullRequest(OutputInterface $output): void
+    private function postPullRequest(): void
     {
-        $output->writeln('Will post about an issue to Gitter.');
-        $number     = (string) (getenv('PR_NUMBER') ?? '');
-        $repository = (string) (getenv('REPOSITORY') ?? '');
-        $title      = (string) (getenv('PR_TITLE') ?? '');
-        $user       = (string) (getenv('PR_USER') ?? '');
-        $token      = (string) (getenv('GITTER_TOKEN') ?? '');
+        $this->output->writeln('Will post about an issue to Gitter.');
+        $number     = (string)(getenv('PR_NUMBER') ?? '');
+        $repository = (string)(getenv('REPOSITORY') ?? '');
+        $title      = (string)(getenv('PR_TITLE') ?? '');
+        $user       = (string)(getenv('PR_USER') ?? '');
+        $token      = (string)(getenv('GITTER_TOKEN') ?? '');
 
         if ('' === $number) {
-            $output->writeln('No PR number provided.');
+            $this->output->writeln('No PR number provided.');
             return;
         }
-        if('dependabot' === $user || 'dependabot[bot]' === $user) {
-            $output->writeln(sprintf('Will ignore user "%s".', $user));
+        if ('dependabot' === $user || 'dependabot[bot]' === $user) {
+            $this->output->writeln(sprintf('Will ignore user "%s".', $user));
             return;
         }
-        $output->writeln(sprintf('PR number: #%s', $number));
-        $output->writeln(sprintf('PR title: %s', $title));
-        $output->writeln(sprintf('PR user: %s', $user));
-        $output->writeln(sprintf('GitHub repository: %s', $repository));
+        $this->output->writeln(sprintf('PR number: #%s', $number));
+        $this->output->writeln(sprintf('PR title: %s', $title));
+        $this->output->writeln(sprintf('PR user: %s', $user));
+        $this->output->writeln(sprintf('GitHub repository: %s', $repository));
 
         $full   = 'https://%s/_matrix/client/v3/rooms/%s/send/m.room.message/%s';
         $host   = 'gitter.ems.host';
@@ -138,7 +138,7 @@ class PostToGitter extends Command
                     'msgtype'        => 'm.text',
                 ]),
         ]);
-        $output->writeln(sprintf('Result of PUT: HTTP %d', $res->getStatusCode()));
+        $this->output->writeln(sprintf('Result of PUT: HTTP %d', $res->getStatusCode()));
     }
 
 }

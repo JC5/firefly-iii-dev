@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use Exception;
-
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -44,33 +43,11 @@ class GenLanguageJson extends Command
         }
     }
 
-    /**
-     *
-     */
-    protected function configure(): void
-    {
-        $this
-            ->setName('ff3:json-translations')
-            ->setDescription('Generate JSON files for language.')
-            ->addArgument('version', InputArgument::REQUIRED, 'For which version?');
-    }
-    public function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        $this->input  = $input;
-        $this->output = $output;
-    }
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     */
     public function __invoke(): int
     {
-        $version      = (string)$this->input->getArgument('version');
-        $paths        = $this->getStoragePaths($version);
-        $result       = [];
+        $version = (string)$this->input->getArgument('version');
+        $paths   = $this->getStoragePaths($version);
+        $result  = [];
 
         // loop all languages
         /** @var string $language */
@@ -82,6 +59,43 @@ class GenLanguageJson extends Command
             $this->storeLanguage($language, $version, $content, $paths);
         }
         return 0;
+    }
+
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
+    }
+
+    /**
+     *
+     */
+    protected function configure(): void
+    {
+        $this
+            ->setName('ff3:json-translations')
+            ->setDescription('Generate JSON files for language.')
+            ->addArgument('version', InputArgument::REQUIRED, 'For which version?');
+    }
+
+    /**
+     * @param string $file
+     * @param string $key
+     *
+     * @return string
+     */
+    private function getEnglishString(string $file, string $key): string
+    {
+        $root      = $this->configuration['paths']['firefly_iii'];
+        $eFileName = sprintf('%s/resources/lang/en_US/%s.php', $root, $file);
+        if (!file_exists($eFileName) || !is_file($eFileName)) {
+            return sprintf('(!%s.%s!)', $file, $key);
+        }
+        $loadLanguage = require($eFileName);
+        if (!array_key_exists($key, $loadLanguage)) {
+            return sprintf('(%s.%s)', $file, $key);
+        }
+        return $loadLanguage[$key];
     }
 
     /**
@@ -160,26 +174,6 @@ class GenLanguageJson extends Command
     }
 
     /**
-     * @param string $file
-     * @param string $key
-     *
-     * @return string
-     */
-    private function getEnglishString(string $file, string $key): string
-    {
-        $root      = $this->configuration['paths']['firefly_iii'];
-        $eFileName = sprintf('%s/resources/lang/en_US/%s.php', $root, $file);
-        if (!file_exists($eFileName) || !is_file($eFileName)) {
-            return sprintf('(!%s.%s!)', $file, $key);
-        }
-        $loadLanguage = require($eFileName);
-        if (!array_key_exists($key, $loadLanguage)) {
-            return sprintf('(%s.%s)', $file, $key);
-        }
-        return $loadLanguage[$key];
-    }
-
-    /**
      * @param string $language
      * @param string $version
      * @param array  $content
@@ -190,7 +184,7 @@ class GenLanguageJson extends Command
     private function storeLanguage(string $language, string $version, array $content, array $paths): void
     {
         $this->output->writeln(sprintf('storeLanguage("%s", array, array)', $language));
-        if(!array_key_exists('config', $content)) {
+        if (!array_key_exists('config', $content)) {
             $this->output->writeln(sprintf('No "config" key in content for language "%s". Skip it.', $language));
             return;
         }

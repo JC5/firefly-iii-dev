@@ -7,17 +7,19 @@ use DateTime;
 use Exception;
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class GenerateThankYouFile
  */
 class GenerateThankYouFile extends Command
 {
-    private CLImate $climate;
-
+    private CLImate         $climate;
+    private InputInterface  $input;
+    private OutputInterface $output;
+    
     /**
      * CleanupCode constructor.
      *
@@ -28,6 +30,12 @@ class GenerateThankYouFile extends Command
         parent::__construct($name);
 
         $this->climate = new CLImate();
+    }
+
+    public function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->input  = $input;
+        $this->output = $output;
     }
 
     /**
@@ -41,28 +49,21 @@ class GenerateThankYouFile extends Command
             ->setDescription('Generate thank you file.');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     * @throws Exception
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(): int
     {
-        $product = (string)$input->getArgument('product');
-        $config = include(VARIABLES);
-        $path = $config['paths']['firefly_iii'];
-        $toolName = 'Firefly III';
+        $product       = (string)$this->input->getArgument('product');
+        $config        = include(VARIABLES);
+        $path          = $config['paths']['firefly_iii'];
+        $toolName      = 'Firefly III';
         $shortToolName = 'Firefly III';
         if ('data-importer' === $product) {
-            $path = $config['paths']['data'];
-            $toolName = 'the Firefly III Data Importer';
+            $path          = $config['paths']['data'];
+            $toolName      = 'the Firefly III Data Importer';
             $shortToolName = 'Firefly III Data Importer';
         }
 
-        $ignore = ['unknown','=', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'JC5', 'root', 'github-actions[bot]'];
-        $lines = [];
+        $ignore  = ['unknown', '=', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'JC5', 'root', 'github-actions[bot]'];
+        $lines   = [];
         $history = [];
 
         // execute commands
@@ -84,7 +85,7 @@ class GenerateThankYouFile extends Command
             if (str_starts_with($line, 'Date:')) {
                 $dateString = trim(str_replace('Date: ', '', $line));
                 $dateObject = new DateTime($dateString);
-                $epoch = $dateObject->getTimestamp();
+                $epoch      = $dateObject->getTimestamp();
                 if ($epoch < $history[$previousAuthor]) {
                     $history[$previousAuthor] = $epoch;
                 }
@@ -96,8 +97,8 @@ class GenerateThankYouFile extends Command
         foreach ($history as $author => $timestamp) {
             $date = new DateTime();
             $date->setTimestamp($timestamp);
-            $year = $date->format('Y');
-            $years[$year] = $years[$year] ?? [];
+            $year                     = $date->format('Y');
+            $years[$year]             = $years[$year] ?? [];
             $years[$year][$timestamp] = $author;
         }
 
