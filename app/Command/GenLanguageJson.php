@@ -38,7 +38,6 @@ class GenLanguageJson extends Command
             $this->langConfig = require($file);
         }
         if (!file_exists($file)) {
-            $this->output->writeln(sprintf('File "%s" does not exist.', $file));
             $this->langConfig = [];
         }
     }
