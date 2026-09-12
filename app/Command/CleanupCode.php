@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Exception;
 use League\CLImate\CLImate;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -187,8 +186,87 @@ class CleanupCode extends Command
         $content        = file_get_contents($file);
         $countEmail     = substr_count($content, 'Copyright (c)');
         $countCopyright = substr_count($content, 'Affero');
+        $base           = basename($file);
+        $replace        = false;
+
         if ($countCopyright > 3 && $countEmail > 1) {
             $this->climate->out(sprintf('File %s has multiple copyright statements (%d and %d).', $file, $countEmail, $countCopyright));
+
+            // most basic search / replace EVER
+            for ($i = 2020; $i <= 2026; $i++) {
+                $search = '/*' . PHP_EOL .
+                          ' * '.$base . PHP_EOL .
+                          ' * Copyright (c) '.$i.' james@firefly-iii.org' . PHP_EOL .
+                          ' *' . PHP_EOL .
+                          ' * This file is part of Firefly III (https://github.com/firefly-iii).' . PHP_EOL .
+                          ' *' . PHP_EOL .
+                          ' * This program is free software: you can redistribute it and/or modify' . PHP_EOL .
+                          ' * it under the terms of the GNU Affero General Public License as' . PHP_EOL .
+                          ' * published by the Free Software Foundation, either version 3 of the' . PHP_EOL .
+                          ' * License, or (at your option) any later version.' . PHP_EOL .
+                          ' *' . PHP_EOL .
+                          ' * This program is distributed in the hope that it will be useful,' . PHP_EOL .
+                          ' * but WITHOUT ANY WARRANTY; without even the implied warranty of' . PHP_EOL .
+                          ' * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the' . PHP_EOL .
+                          ' * GNU Affero General Public License for more details.' . PHP_EOL .
+                          ' *' . PHP_EOL .
+                          ' * You should have received a copy of the GNU Affero General Public License' . PHP_EOL .
+                          ' * along with this program.  If not, see <https://www.gnu.org/licenses/>.' . PHP_EOL .
+                          ' */';
+                if(str_contains($content, $search)) {
+                    if(false === $replace) {
+                        $this->climate->out(sprintf('Found for %s', $i));
+                    }
+                    if(true === $replace) {
+                        $this->climate->out(sprintf('Found and replaced for %s', $i));
+                        $content = str_replace($search, '', $content);
+                        file_put_contents($file, $content);
+                    }
+
+                }
+
+            }
         }
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

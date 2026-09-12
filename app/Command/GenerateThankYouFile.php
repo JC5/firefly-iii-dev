@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use DateTime;
-use Exception;
 use League\CLImate\CLImate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,7 +18,7 @@ class GenerateThankYouFile extends Command
     private CLImate         $climate;
     private InputInterface  $input;
     private OutputInterface $output;
-    
+
     /**
      * CleanupCode constructor.
      *
@@ -62,7 +61,23 @@ class GenerateThankYouFile extends Command
             $shortToolName = 'Firefly III Data Importer';
         }
 
-        $ignore  = ['unknown', '=', 'Scrutinizer Auto-Fixer', 'Dorigo', 'Sander Dorigo', 'James Cole', 'dependabot[bot]', 'mergify[bot]', 'github-actions', 'Sander D', 'JC5', 'root', 'github-actions[bot]'];
+        $ignore  = [
+            'R1DEN',
+            'unknown',
+            '=',
+            'Scrutinizer Auto-Fixer',
+            'Tomer S',
+            'Dorigo',
+            'Sander Dorigo',
+            'James Cole',
+            'dependabot[bot]',
+            'mergify[bot]',
+            'github-actions',
+            'Sander D',
+            'JC5',
+            'root',
+            'github-actions[bot]',
+        ];
         $lines   = [];
         $history = [];
 
