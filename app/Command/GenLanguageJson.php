@@ -200,6 +200,8 @@ class GenLanguageJson extends Command
         }
         if ('v3' === $version) {
             $destinations[] = sprintf($paths['locale_file'], $code);
+            $storageCode = str_replace('_','-',$language);
+            $destinations[] = sprintf($paths['locale_file'], $storageCode);
             $destinations[] = sprintf($paths['locale_file'], $language);
         }
 
