@@ -223,7 +223,7 @@ class GenLanguageJson extends Command
                 $returnVar = 0;
                 exec('node ' . $file, $array, $returnVar);
                 if ($returnVar !== 0) {
-                    $this->output->writeln(sprintf('Error executing Node.js for language "%s".', $language));
+                    $this->output->writeln(sprintf('Error executing key "%s" Node.js for language "%s".', $key, $language));
                     exit(1);
                 }
             }
