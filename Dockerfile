@@ -6,17 +6,22 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y git zip unzip ca
 # Use bash for the shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+
 # install nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh | bash
 
 # set env
 ENV NVM_DIR=/root/.nvm
 
 # install node
-RUN bash -c "source $NVM_DIR/nvm.sh && nvm install 20"
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm install 24"
+
+# set ENTRYPOINT for reloading nvm-environment
+RUN ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
 
 # set cmd to bash
 CMD ["/bin/bash"]
+
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY . /usr/src/dev-tools
