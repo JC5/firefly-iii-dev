@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e -o pipefail
+
 cd /usr/src/dev-tools
 
 rm -rf vendor
