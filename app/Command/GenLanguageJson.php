@@ -209,6 +209,7 @@ class GenLanguageJson extends Command
         $keys = [
             'date_time_fns', 'month_and_day_fns','date_time_fns_short'
         ];
+        exec('npm install');
         foreach ($destinations as $destination) {
             file_put_contents($destination, $json);
 
@@ -218,9 +219,11 @@ class GenLanguageJson extends Command
                 $path = realpath(__DIR__.'/../../');
                 $file = sprintf($path . '/test-date.js');
                 file_put_contents($file, $jsString);
-                exec('node ' . $file, $output, $returnVar);
+                $array = [];
+                $returnVar = 0;
+                exec('node ' . $file, $array, $returnVar);
                 if ($returnVar !== 0) {
-                    $this->output->writeln(sprintf('Error executing Node.js for language "%s". Please ensure that Node.js is installed and available in your PATH.', $language));
+                    $this->output->writeln(sprintf('Error executing Node.js for language "%s".', $language));
                     exit(1);
                 }
             }
