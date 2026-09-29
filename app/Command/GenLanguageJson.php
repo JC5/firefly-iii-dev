@@ -209,26 +209,24 @@ class GenLanguageJson extends Command
         $keys = [
             'date_time_fns', 'month_and_day_fns','date_time_fns_short'
         ];
-        exec('npm install');
+
+        foreach($keys as $key) {
+            $jsString = 'import { format } from "date-fns";'.PHP_EOL;
+            $jsString .= sprintf('console.log(format(new Date(1984, 8, 17), "%s"));', $content['config'][$key]).PHP_EOL;
+            $path = realpath(__DIR__.'/../../');
+            $file = sprintf($path . '/test-date.js');
+            file_put_contents($file, $jsString);
+            $array = [];
+            $returnVar = 0;
+            exec('node ' . $file, $array, $returnVar);
+            if ($returnVar !== 0) {
+                $this->output->writeln(sprintf('Error executing key "%s" Node.js for language "%s".', $key, $language));
+                exit(1);
+            }
+        }
+
         foreach ($destinations as $destination) {
             file_put_contents($destination, $json);
-
-            foreach($keys as $key) {
-                $jsString = 'import { format } from "date-fns";'.PHP_EOL;
-                $jsString .= sprintf('console.log(format(new Date(1984, 8, 17), "%s"));', $content['config'][$key]).PHP_EOL;
-                $path = realpath(__DIR__.'/../../');
-                $file = sprintf($path . '/test-date.js');
-                file_put_contents($file, $jsString);
-                $array = [];
-                $returnVar = 0;
-                exec('node ' . $file, $array, $returnVar);
-                if ($returnVar !== 0) {
-                    $this->output->writeln(sprintf('Error executing key "%s" Node.js for language "%s".', $key, $language));
-                    exit(1);
-                }
-            }
-
-
             // now validate the JSON file against a JS parser, and try to parse a date from the JSON file.
 
 
