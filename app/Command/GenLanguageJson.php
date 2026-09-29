@@ -182,6 +182,7 @@ class GenLanguageJson extends Command
      */
     private function storeLanguage(string $language, string $version, array $content, array $paths): void
     {
+        $language = str_replace('_', '-', $language);
         $this->output->writeln(sprintf('storeLanguage("%s", array, array)', $language));
         if (!array_key_exists('config', $content)) {
             $this->output->writeln(sprintf('No "config" key in content for language "%s". Skip it.', $language));
@@ -203,8 +204,29 @@ class GenLanguageJson extends Command
             $destinations[] = sprintf($paths['locale_file'], $language);
         }
 
+        $keys = [
+            'date_time_fns', 'month_and_day_fns','date_time_fns_short'
+        ];
         foreach ($destinations as $destination) {
             file_put_contents($destination, $json);
+
+            foreach($keys as $key) {
+                $jsString = 'import { format } from "date-fns";'.PHP_EOL;
+                $jsString .= sprintf('console.log(format(new Date(1984, 8, 17), "%s"));', $content['config'][$key]).PHP_EOL;
+                $path = realpath(__DIR__.'/../../');
+                $file = sprintf($path . '/test-date.js');
+                file_put_contents($file, $jsString);
+                exec('node ' . $file, $output, $returnVar);
+                if ($returnVar !== 0) {
+                    $this->output->writeln(sprintf('Error executing Node.js for language "%s". Please ensure that Node.js is installed and available in your PATH.', $language));
+                    exit(1);
+                }
+            }
+
+
+            // now validate the JSON file against a JS parser, and try to parse a date from the JSON file.
+
+
         }
     }
 
