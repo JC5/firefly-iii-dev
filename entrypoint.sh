@@ -17,8 +17,6 @@ export NVM_DIR="/root/.nvm"
 
 npm install
 
-npm version
-
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php > /dev/null
 php -r "unlink('composer-setup.php');"
