@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -201,28 +200,29 @@ class GenLanguageJson extends Command
         }
         if ('v3' === $version) {
             $destinations[] = sprintf($paths['locale_file'], $code);
-            $storageCode = str_replace('_','-',$language);
+            $storageCode    = str_replace('_', '-', $language);
             $destinations[] = sprintf($paths['locale_file'], $storageCode);
             $destinations[] = sprintf($paths['locale_file'], $language);
         }
 
-        $keys = [
-            'date_time_fns', 'month_and_day_fns','date_time_fns_short'
-        ];
+        $keys = ['date_time_fns', 'month_and_day_fns', 'date_time_fns_short',];
+        $jsString = 'import { format } from "date-fns";' . PHP_EOL;
 
-        foreach($keys as $key) {
-            $jsString = 'import { format } from "date-fns";'.PHP_EOL;
-            $jsString .= sprintf('console.log(format(new Date(1984, 8, 17), "%s"));', $content['config'][$key]).PHP_EOL;
-            $path = realpath(__DIR__.'/../../');
-            $file = sprintf($path . '/test-date.js');
-            file_put_contents($file, $jsString);
-            $array = [];
-            $returnVar = 0;
-            exec('node ' . $file, $array, $returnVar);
-            if ($returnVar !== 0) {
-                $this->output->writeln(sprintf('Error executing key "%s" Node.js for language "%s".', $key, $language));
-                exit(1);
-            }
+        foreach ($keys as $key) {
+            $jsString .= sprintf('console.log(format(new Date(1984, 8, 17), "%s"));', $content['config'][$key]) . PHP_EOL;
+        }
+        $path = realpath(__DIR__ . '/../../');
+        $file = sprintf($path . '/test-date.js');
+        file_put_contents($file, $jsString);
+        $array     = [];
+        $returnVar = 0;
+        exec('node ' . $file, $array, $returnVar);
+        if ($returnVar !== 0) {
+            $this->output->writeln(sprintf('Error executing JS for language "%s".', $language));
+            exit(1);
+        }
+        foreach ($array as $item) {
+            $this->output->writeln(sprintf('- %s', $item));
         }
 
         foreach ($destinations as $destination) {
