@@ -15,7 +15,7 @@ outputs:
     description: 'Result of the action'
 runs:
   using: 'docker'
-  image: 'docker.io/jc5x/development-tools:latest'
+  image: 'docker://jc5x/development-tools:latest'
   args:
     - ${{ inputs.action }}
     - ${{ inputs.output }}
