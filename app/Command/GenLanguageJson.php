@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Generate JSON files with translations in them,
  * Class GenLanguageJson
  */
-#[AsCommand(name: 'ff3-json-translations')]
+#[AsCommand(name: 'ff3:json-translations')]
 class GenLanguageJson extends Command
 {
     private array           $configuration;
@@ -205,7 +205,7 @@ class GenLanguageJson extends Command
             $destinations[] = sprintf($paths['locale_file'], $language);
         }
 
-        $keys = ['date_time_fns', 'month_and_day_fns', 'date_time_fns_short','quarter_fns','half_year_fns'];
+        $keys = ['date_time_fns', 'month_and_day_fns', 'date_time_fns_short'];
         $jsString = 'import { format } from "date-fns";' . PHP_EOL;
 
         foreach ($keys as $key) {
