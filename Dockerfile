@@ -19,6 +19,8 @@ RUN bash -c "source $NVM_DIR/nvm.sh && nvm install 24"
 # set ENTRYPOINT for reloading nvm-environment
 RUN ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
 
+RUN ["/usr/src/dev-tools/installation.sh"]
+
 # set cmd to bash
 CMD ["/bin/bash"]
 
