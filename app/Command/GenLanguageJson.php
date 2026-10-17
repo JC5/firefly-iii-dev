@@ -209,7 +209,7 @@ class GenLanguageJson extends Command
         $jsString = 'import { format } from "date-fns";' . PHP_EOL;
 
         foreach ($keys as $key) {
-            $jsString .= sprintf('console.log(format(new Date(1984, 8, 17), "%s"));', $content['config'][$key]) . PHP_EOL;
+            $jsString .= sprintf('console.log("%s: " + format(new Date(1984, 8, 17), "%s"));', $key, $content['config'][$key]) . PHP_EOL;
         }
         $path = realpath(__DIR__ . '/../../');
         $file = sprintf($path . '/test-date.js');
