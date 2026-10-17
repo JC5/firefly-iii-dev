@@ -191,6 +191,20 @@ class GenLanguageJson extends Command
         $json         = json_encode($content, JSON_PRETTY_PRINT, 16);
         $destinations = [];
 
+        // code that is necessary to make date-fns work.
+        $import = str_replace('-','', $code);
+        // turn en-gb into enGB
+        if(strleN($import) > 2) {
+            $import = sprintf('%s%s',substr($import, 0, 2), strtoupper(substr($import, 2)));
+        }
+        $replace =  [
+            'en' => 'enUS',
+            'fa' => 'faIR',
+        ];
+        if(array_key_exists($import, $replace)) {
+            $import = $replace[$import];
+        }
+
         if ('v1' === $version) {
             $destinations[] = sprintf($paths['locale_file'], $code);
         }
@@ -207,9 +221,10 @@ class GenLanguageJson extends Command
 
         $keys = ['date_time_fns', 'month_and_day_fns', 'date_time_fns_short'];
         $jsString = 'import { format } from "date-fns";' . PHP_EOL;
+        $jsString .= sprintf('import { %s } from "date-fns/locale";', $import) . PHP_EOL;
 
         foreach ($keys as $key) {
-            $jsString .= sprintf('console.log("%s: " + format(new Date(1984, 8, 17), "%s"));', $key, $content['config'][$key]) . PHP_EOL;
+            $jsString .= sprintf('console.log("%s: " + format(new Date(1984, 8, 17, 12, 28), "%s", {locale: %s}));', $key, $content['config'][$key], $import) . PHP_EOL;
         }
         $path = realpath(__DIR__ . '/../../');
         $file = sprintf($path . '/test-date.js');
