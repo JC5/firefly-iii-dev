@@ -19,15 +19,15 @@ RUN bash -c "source $NVM_DIR/nvm.sh && nvm install 24"
 # set ENTRYPOINT for reloading nvm-environment
 RUN ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
 
-RUN ["bash", "/usr/src/dev-tools/installation.sh"]
-
-# set cmd to bash
-CMD ["/bin/bash"]
-
-
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY . /usr/src/dev-tools
 WORKDIR /usr/src/dev-tools
+
+RUN ["chmod", "+x", "./installation.sh"]
+RUN ["bash", "-c", "./installation.sh"]
+
+# set cmd to bash
+CMD ["/bin/bash"]
 
 RUN ["chmod", "+x", "./entrypoint.sh"]
 
