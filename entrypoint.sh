@@ -3,9 +3,9 @@
 set -e -o pipefail
 
 if [[ "output" == "$2" ]]; then
-  php cli.php $1 > $FIREFLY_III_ROOT/output.txt
+  php /usr/src/dev-tools/cli.php $1 > $FIREFLY_III_ROOT/output.txt
   echo "result=none" >> $GITHUB_OUTPUT
 else
-  php cli.php $1
+  php /usr/src/dev-tools/cli.php $1
   echo "result=none" >> $GITHUB_OUTPUT
 fi
