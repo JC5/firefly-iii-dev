@@ -205,7 +205,7 @@ class GenLanguageJson extends Command
             $destinations[] = sprintf($paths['locale_file'], $language);
         }
 
-        $keys = ['date_time_fns', 'month_and_day_fns', 'date_time_fns_short',];
+        $keys = ['date_time_fns', 'month_and_day_fns', 'date_time_fns_short','quarter_fns','half_year_fns'];
         $jsString = 'import { format } from "date-fns";' . PHP_EOL;
 
         foreach ($keys as $key) {
